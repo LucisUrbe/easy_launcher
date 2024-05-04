@@ -7,7 +7,7 @@ class StrObf {
       "abcdefghijklmnopqrstuvwxyz{|}~";
 // 94 printable chars without $ \ "
 
-  static List<int> encode(String input) {
+  static String encode(String input) {
     List<int> source = utf8.encode(input);
     List<int> output = [];
     int b = 0;
@@ -42,10 +42,11 @@ class StrObf {
       }
     }
 
-    return output;
+    return String.fromCharCodes(output);
   }
 
-  static String decode(List<int> input) {
+  static String decode(String inputString) {
+    List<int> input = inputString.codeUnits;
     int v = -1;
     int b = 0;
     int n = 0;
@@ -75,14 +76,3 @@ class StrObf {
     return utf8.decode(output);
   }
 }
-
-// // Use the function below to make use of the utils.
-// void main() {
-//   String testString = "Hello, world!";
-//   List<int> encoded = StrObf.encode(testString);
-//   String decoded = StrObf.decode(encoded);
-//
-//   print("Original: $testString");
-//   print("Encoded: ${String.fromCharCodes(encoded)}");
-//   print("Decoded: $decoded");
-// }
