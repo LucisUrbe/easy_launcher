@@ -50,31 +50,11 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `easy_launcher`
-  String get title {
+  /// `Start`
+  String get start {
     return Intl.message(
-      'easy_launcher',
-      name: 'title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Flutter Demo Home Page`
-  String get demo {
-    return Intl.message(
-      'Flutter Demo Home Page',
-      name: 'demo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You have pushed the button this many times:`
-  String get times {
-    return Intl.message(
-      'You have pushed the button this many times:',
-      name: 'times',
+      'Start',
+      name: 'start',
       desc: '',
       args: [],
     );
