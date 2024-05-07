@@ -16,10 +16,17 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('lib/assets/background.png'),
+        ),
+      ),
+      child: Row(
         children: <Widget>[
           NavigationRail(
+            backgroundColor: Colors.transparent,
             selectedIndex: _selectedIndex,
             groupAlignment: -1.0,
             onDestinationSelected: (int index) {
@@ -66,9 +73,9 @@ class _MainPageState extends State<MainPage> {
           const VerticalDivider(thickness: 1, width: 1),
           // This is the main content.
           <Expanded>[
-            startView(),
-            startView(),
-            startView(),
+            startView(context),
+            startView(context),
+            startView(context),
           ][_selectedIndex],
         ],
       ),

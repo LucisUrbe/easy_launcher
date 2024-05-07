@@ -59,6 +59,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Launch`
+  String get launchGame {
+    return Intl.message(
+      'Launch',
+      name: 'launchGame',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
