@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/views/start.dart';
+import 'package:easy_launcher/utils/remote_api.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -16,69 +17,81 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
+    return FutureBuilder<ImageProvider>(
+      future: getRemoteBGI(getRemoteContent()),
+      builder: (BuildContext context, AsyncSnapshot<ImageProvider> snapshot) {
+        DecorationImage bg = const DecorationImage(
           fit: BoxFit.cover,
           image: AssetImage('lib/assets/background.png'),
-        ),
-      ),
-      child: Row(
-        children: <Widget>[
-          NavigationRail(
-            backgroundColor: Colors.transparent,
-            selectedIndex: _selectedIndex,
-            groupAlignment: -1.0,
-            onDestinationSelected: (int index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            labelType: NavigationRailLabelType.all,
-            leading: showLeading
-                ? FloatingActionButton(
-                    elevation: 0,
-                    onPressed: () {
-                      // Add your onPressed code here!
-                    },
-                    child: const Icon(Icons.add),
-                  )
-                : const SizedBox(),
-            trailing: showTrailing
-                ? IconButton(
-                    onPressed: () {
-                      // Add your onPressed code here!
-                    },
-                    icon: const Icon(Icons.more_horiz_rounded),
-                  )
-                : const SizedBox(),
-            destinations: <NavigationRailDestination>[
-              NavigationRailDestination(
-                icon: const Icon(Icons.favorite_border),
-                selectedIcon: const Icon(Icons.favorite),
-                label: Text(S.of(context).start),
+        );
+        if (snapshot.hasData) {
+          bg = DecorationImage(
+            fit: BoxFit.cover,
+            image: snapshot.data!,
+          );
+        }
+        return Container(
+          decoration: BoxDecoration(
+            image: bg,
+          ),
+          child: Row(
+            children: <Widget>[
+              NavigationRail(
+                backgroundColor: Colors.transparent,
+                selectedIndex: _selectedIndex,
+                groupAlignment: -1.0,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                labelType: NavigationRailLabelType.all,
+                leading: showLeading
+                    ? FloatingActionButton(
+                        elevation: 0,
+                        onPressed: () {
+                          // Add your onPressed code here!
+                        },
+                        child: const Icon(Icons.add),
+                      )
+                    : const SizedBox(),
+                trailing: showTrailing
+                    ? IconButton(
+                        onPressed: () {
+                          // Add your onPressed code here!
+                        },
+                        icon: const Icon(Icons.more_horiz_rounded),
+                      )
+                    : const SizedBox(),
+                destinations: <NavigationRailDestination>[
+                  NavigationRailDestination(
+                    icon: const Icon(Icons.favorite_border),
+                    selectedIcon: const Icon(Icons.favorite),
+                    label: Text(S.of(context).start),
+                  ),
+                  NavigationRailDestination(
+                    icon: const Icon(Icons.bookmark_border),
+                    selectedIcon: const Icon(Icons.book),
+                    label: Text(S.of(context).start),
+                  ),
+                  NavigationRailDestination(
+                    icon: const Icon(Icons.star_border),
+                    selectedIcon: const Icon(Icons.star),
+                    label: Text(S.of(context).start),
+                  ),
+                ],
               ),
-              NavigationRailDestination(
-                icon: const Icon(Icons.bookmark_border),
-                selectedIcon: const Icon(Icons.book),
-                label: Text(S.of(context).start),
-              ),
-              NavigationRailDestination(
-                icon: const Icon(Icons.star_border),
-                selectedIcon: const Icon(Icons.star),
-                label: Text(S.of(context).start),
-              ),
+              const VerticalDivider(thickness: 1, width: 1),
+              // This is the main content.
+              <Expanded>[
+                startView(context),
+                startView(context),
+                startView(context),
+              ][_selectedIndex],
             ],
           ),
-          const VerticalDivider(thickness: 1, width: 1),
-          // This is the main content.
-          <Expanded>[
-            startView(context),
-            startView(context),
-            startView(context),
-          ][_selectedIndex],
-        ],
-      ),
+        );
+      },
     );
   }
 }
