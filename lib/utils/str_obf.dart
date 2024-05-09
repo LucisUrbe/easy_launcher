@@ -5,7 +5,7 @@ class StrObf {
       "!#%&'()*+,-./0123456789:;<=>?@"
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`"
       "abcdefghijklmnopqrstuvwxyz{|}~";
-// 94 printable chars without $ \ "
+// all printable chars without $ \ "
 
   static Future<String> encode(String input) async {
     List<int> source = utf8.encode(input);

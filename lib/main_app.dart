@@ -20,8 +20,8 @@ class MainApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
       title: "easy_launcher",
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan.shade800),
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
       ),
       home: const MainPage(),
     );

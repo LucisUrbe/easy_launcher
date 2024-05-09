@@ -7,16 +7,13 @@ import 'package:easy_launcher/constants/cn_rel.dart';
 
 Future<String> getRemoteContent() async {
   final String url = await UsefulKV.get(CnRel.useful[0]);
-  final String key = await UsefulKV.get(CnRel.useful[1]);
-  String parameters = '?'
-      'filter_adv=true'
-      '&'
-      'key=$key'
-      '&'
-      'launcher_id=${CnRel.launcherId.toString()}'
-      '&'
-      'language=${CnRel.language}';
-  final Uri httpPackageUrl = Uri.parse(url + parameters);
+  final List<String> parameters = <String>[
+    'key=${await UsefulKV.get(CnRel.useful[1])}',
+    'filter_adv=${CnRel.filterAdv.toString()}',
+    'launcher_id=${CnRel.launcherId.toString()}',
+    'language=${CnRel.language}',
+  ];
+  final Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
   final String httpPackageInfo = await http.read(httpPackageUrl);
   return httpPackageInfo;
 }

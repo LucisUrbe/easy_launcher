@@ -23,6 +23,9 @@ class UsefulKV {
   }
 
   static Future<String> get(String oracle) async {
+    if (await getK("TYPE") != "B91" || await getV("TYPE") != "B91") {
+      return "";
+    }
     return getV(await getK(oracle));
   }
 }
