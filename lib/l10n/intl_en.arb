@@ -1,5 +1,8 @@
 {
   "start": "Start",
   "launchGame": "Launch",
+  "activity": "Events",
+  "announce": "Notices",
+  "info": "Info",
   "@@locale": "en"
 }

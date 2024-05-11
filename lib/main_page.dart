@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/views/start.dart';
@@ -17,18 +19,22 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ImageProvider>(
-      future: getRemoteBGI(getRemoteContent()),
-      builder: (BuildContext context, AsyncSnapshot<ImageProvider> snapshot) {
+    return FutureBuilder<String>(
+      future: getRemoteContent(),
+      builder:
+          (BuildContext context, AsyncSnapshot<String> snapshot) {
         DecorationImage bg = const DecorationImage(
           fit: BoxFit.cover,
           image: AssetImage('lib/assets/background.png'),
         );
+        Expanded sv = startView(context, {});
         if (snapshot.hasData) {
+          Map<String, dynamic> map = jsonDecode(snapshot.data!);
           bg = DecorationImage(
             fit: BoxFit.cover,
-            image: snapshot.data!,
+            image: getRemoteBGI(map),
           );
+          sv = startView(context, map);
         }
         return Container(
           decoration: BoxDecoration(
@@ -106,15 +112,15 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
               const VerticalDivider(
-                thickness: 1,
-                width: 1,
+                thickness: 1.0,
+                width: 1.0,
                 color: Colors.transparent,
               ),
               // This is the main content.
               <Expanded>[
-                startView(context),
-                startView(context),
-                startView(context),
+                sv,
+                sv,
+                sv,
               ][_selectedIndex],
             ],
           ),

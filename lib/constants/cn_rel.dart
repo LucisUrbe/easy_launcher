@@ -35,7 +35,7 @@ class CnRelPost {
 
 class CnRelBanner {
   int order = -1;
-  String imageURL = "about:blank"; // "img"
+  String imageURL = "about:blank"; // "img", 690x320, PNG or JPG
   String onClickURL = "about:blank"; // "url"
   String bannerID = ""; // This item is often ignored.
   String name = ""; // This item is always equal to "".

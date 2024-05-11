@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
 import 'package:easy_launcher/constants/useful.b91.dart';
@@ -18,20 +16,18 @@ Future<String> getRemoteContent() async {
   return httpPackageInfo;
 }
 
-Future<ImageProvider> getRemoteBGI(Future<String> content) async {
-  final map = jsonDecode(await content);
-  if (map['retcode'] == 0 && map['message'] == 'OK') {
-    return NetworkImage(map['data']['adv']['background']);
+ImageProvider getRemoteBGI(Map<String, dynamic> content) {
+  if (content['retcode'] == 0 && content['message'] == 'OK') {
+    return NetworkImage(content['data']['adv']['background']);
   }
   return const AssetImage('lib/assets/background.png');
 }
 
-Future<List<CnRelPost>> getRemotePosts(Future<String> content) async {
+List<CnRelPost> getRemotePosts(Map<String, dynamic> content) {
   List<CnRelPost> posts = [];
-  final map = jsonDecode(await content);
-  if (map['retcode'] == 0 && map['message'] == 'OK') {
-    final List<Map<String, String>> postsMap = map['data']['post'];
-    for (final Map<String, String> p in postsMap) {
+  if (content['retcode'] == 0 && content['message'] == 'OK') {
+    final List<dynamic> postsMap = content['data']['post'];
+    for (final Map<String, dynamic> p in postsMap) {
       PostType t = PostType.info;
       String s = p['type']!;
       if (s == 'POST_TYPE_ANNOUNCE') {
@@ -56,12 +52,11 @@ Future<List<CnRelPost>> getRemotePosts(Future<String> content) async {
   return posts;
 }
 
-Future<List<CnRelBanner>> getRemoteBanners(Future<String> content) async {
+List<CnRelBanner> getRemoteBanners(Map<String, dynamic> content) {
   List<CnRelBanner> banners = [];
-  final map = jsonDecode(await content);
-  if (map['retcode'] == 0 && map['message'] == 'OK') {
-    final List<Map<String, String>> bannersMap = map['data']['banners'];
-    for (final Map<String, String> b in bannersMap) {
+  if (content['retcode'] == 0 && content['message'] == 'OK') {
+    final List<dynamic> bannersMap = content['data']['banner'];
+    for (final Map<String, dynamic> b in bannersMap) {
       banners.add(
         CnRelBanner(
           order: int.parse(b['order']!),

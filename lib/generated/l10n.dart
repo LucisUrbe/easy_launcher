@@ -69,6 +69,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Events`
+  String get activity {
+    return Intl.message(
+      'Events',
+      name: 'activity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notices`
+  String get announce {
+    return Intl.message(
+      'Notices',
+      name: 'announce',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Info`
+  String get info {
+    return Intl.message(
+      'Info',
+      name: 'info',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
