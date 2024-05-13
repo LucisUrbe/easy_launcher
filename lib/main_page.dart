@@ -21,20 +21,27 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
       future: getRemoteContent(),
-      builder:
-          (BuildContext context, AsyncSnapshot<String> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         DecorationImage bg = const DecorationImage(
           fit: BoxFit.cover,
           image: AssetImage('lib/assets/background.png'),
         );
-        Expanded sv = startView(context, {});
+        StartPage sp = const StartPage(
+          content: {},
+        );
         if (snapshot.hasData) {
-          Map<String, dynamic> map = jsonDecode(snapshot.data!);
+          Map<String, dynamic> map = json.decode(
+            utf8.decode(
+              snapshot.data!.codeUnits,
+            ),
+          );
           bg = DecorationImage(
             fit: BoxFit.cover,
             image: getRemoteBGI(map),
           );
-          sv = startView(context, map);
+          sp = StartPage(
+            content: map,
+          );
         }
         return Container(
           decoration: BoxDecoration(
@@ -117,10 +124,10 @@ class _MainPageState extends State<MainPage> {
                 color: Colors.transparent,
               ),
               // This is the main content.
-              <Expanded>[
-                sv,
-                sv,
-                sv,
+              <StartPage>[
+                sp,
+                sp,
+                sp,
               ][_selectedIndex],
             ],
           ),

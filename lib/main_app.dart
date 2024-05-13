@@ -21,7 +21,7 @@ class MainApp extends StatelessWidget {
       title: "easy_launcher",
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
       home: const MainPage(),
     );
