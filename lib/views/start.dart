@@ -20,9 +20,11 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  int selectedPostIndex = 1;
-  // This state makes this part of widget unable to be simplified as a function
-  // because Dart does not support referring or setting a state by just passing
+  int _postIndex = 1;
+  bool isHovering = false;
+  final CarouselController _controller = CarouselController();
+  // The states make this part of widget unable to be simplified as a function
+  // because Dart does not support referring or setting states by just passing
   // function parameters.
 
   List<List<Widget>> buildPosts(List<CnRelPost> posts) {
@@ -168,7 +170,7 @@ class _StartPageState extends State<StartPage> {
                                 TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      selectedPostIndex = 1;
+                                      _postIndex = 1;
                                     });
                                   },
                                   child: Text(
@@ -182,7 +184,7 @@ class _StartPageState extends State<StartPage> {
                                 TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      selectedPostIndex = 2;
+                                      _postIndex = 2;
                                     });
                                   },
                                   child: Text(
@@ -196,7 +198,7 @@ class _StartPageState extends State<StartPage> {
                                 TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      selectedPostIndex = 3;
+                                      _postIndex = 3;
                                     });
                                   },
                                   child: Text(
@@ -211,7 +213,7 @@ class _StartPageState extends State<StartPage> {
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: selectedPost[selectedPostIndex - 1],
+                              children: selectedPost[_postIndex - 1],
                             ),
                           ],
                         ),
@@ -227,6 +229,7 @@ class _StartPageState extends State<StartPage> {
                   width: 350.0,
                   height: 162.0,
                   child: CarouselSlider(
+                    carouselController: _controller,
                     options: CarouselOptions(
                       height: 320.0,
                       aspectRatio: 690.0 / 320.0,
@@ -239,18 +242,32 @@ class _StartPageState extends State<StartPage> {
                     ),
                     items: banners
                         .map(
-                          (b) => ClipRRect(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(5.0),
-                            ),
-                            child: Stack(
-                              children: <Widget>[
-                                Image.network(
-                                  b.imageURL,
-                                  fit: BoxFit.cover,
-                                  width: 690.0,
-                                ),
-                              ],
+                          (b) => Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () async {
+                                if (!await launchUrl(Uri.parse(b.onClickURL))) {
+                                  throw Exception(
+                                      'Could not launch ${b.onClickURL}');
+                                }
+                              },
+                              onHover: (bool hovering) {
+                                setState(() => isHovering = hovering);
+                              },
+                              child: Stack(
+                                children: <Widget>[
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    child: Image.network(
+                                      b.imageURL,
+                                      fit: BoxFit.cover,
+                                      width: 690.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         )

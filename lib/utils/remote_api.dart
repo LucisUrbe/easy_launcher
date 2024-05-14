@@ -18,7 +18,7 @@ Future<String> getRemoteContent() async {
 
 ImageProvider getRemoteBGI(Map<String, dynamic> content) {
   if (content['retcode'] == 0 && content['message'] == 'OK') {
-    // TODO: NetworkImage not working on web targets
+    // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
     return NetworkImage(content['data']['adv']['background']);
   }
   return const AssetImage('lib/assets/background.png');
