@@ -18,6 +18,7 @@ Future<String> getRemoteContent() async {
 
 ImageProvider getRemoteBGI(Map<String, dynamic> content) {
   if (content['retcode'] == 0 && content['message'] == 'OK') {
+    // TODO: NetworkImage not working on web targets
     return NetworkImage(content['data']['adv']['background']);
   }
   return const AssetImage('lib/assets/background.png');

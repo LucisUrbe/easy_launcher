@@ -22,10 +22,6 @@ class _MainPageState extends State<MainPage> {
     return FutureBuilder<String>(
       future: getRemoteContent(),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        DecorationImage bg = const DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('lib/assets/background.png'),
-        );
         StartPage sp = const StartPage(
           content: {},
         );
@@ -35,17 +31,13 @@ class _MainPageState extends State<MainPage> {
               snapshot.data!.codeUnits,
             ),
           );
-          bg = DecorationImage(
-            fit: BoxFit.cover,
-            image: getRemoteBGI(map),
-          );
           sp = StartPage(
             content: map,
           );
         }
         return Container(
-          decoration: BoxDecoration(
-            image: bg,
+          decoration: const BoxDecoration(
+            color: Colors.black,
           ),
           child: Row(
             children: <Widget>[
