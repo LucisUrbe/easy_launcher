@@ -1,5 +1,6 @@
 {
-  "start": "Start",
+  "remoteLoading": "Please wait while loading remote contents.",
+  "remoteFailed": "Failed to load remote contents.",
   "launchGame": "Launch",
   "activity": "Events",
   "announce": "Notices",

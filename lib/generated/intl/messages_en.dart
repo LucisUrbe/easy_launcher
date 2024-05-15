@@ -26,6 +26,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "announce": MessageLookupByLibrary.simpleMessage("Notices"),
         "info": MessageLookupByLibrary.simpleMessage("Info"),
         "launchGame": MessageLookupByLibrary.simpleMessage("Launch"),
-        "start": MessageLookupByLibrary.simpleMessage("Start")
+        "remoteFailed": MessageLookupByLibrary.simpleMessage(
+            "Failed to load remote contents."),
+        "remoteLoading": MessageLookupByLibrary.simpleMessage(
+            "Please wait while loading remote contents.")
       };
 }

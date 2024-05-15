@@ -50,11 +50,21 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Start`
-  String get start {
+  /// `Please wait while loading remote contents.`
+  String get remoteLoading {
     return Intl.message(
-      'Start',
-      name: 'start',
+      'Please wait while loading remote contents.',
+      name: 'remoteLoading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to load remote contents.`
+  String get remoteFailed {
+    return Intl.message(
+      'Failed to load remote contents.',
+      name: 'remoteFailed',
       desc: '',
       args: [],
     );
