@@ -1,0 +1,10 @@
+{
+  "remoteLoading": "请稍等，正在载入远程内容。",
+  "remoteFailed": "远程内容载入失败了。",
+  "launchGame": "启动",
+  "settings": "设置",
+  "activity": "活动",
+  "announce": "公告",
+  "info": "资讯",
+  "@@locale": "zh"
+}

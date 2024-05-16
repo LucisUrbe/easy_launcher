@@ -121,44 +121,111 @@ class _StartPageState extends State<StartPage> {
             image: bg,
           ),
         ),
-        Positioned(
-          right: 120.0,
-          bottom: 80.0,
-          child: Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30.0),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: 5.0,
-                  sigmaY: 5.0,
-                  tileMode: TileMode.clamp,
-                ),
-                child: Container(
-                  width: 150.0,
-                  height: 40.0,
-                  decoration: const BoxDecoration(
-                    color: Colors.black12,
+        widget.content.isNotEmpty
+            ? Positioned(
+                right: 120.0,
+                bottom: 80.0,
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 5.0,
+                        sigmaY: 5.0,
+                        tileMode: TileMode.clamp,
+                      ),
+                      child: Container(
+                        width: 150.0,
+                        height: 40.0,
+                        decoration: const BoxDecoration(
+                          color: Colors.black12,
+                        ),
+                        child: Center(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              S.of(context).launchGame,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                backgroundColor: Colors.transparent,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  child: Center(
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        S.of(context).launchGame,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          backgroundColor: Colors.transparent,
+                ),
+              )
+            : Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 5.0,
+                      sigmaY: 5.0,
+                      tileMode: TileMode.clamp,
+                    ),
+                    child: Container(
+                      width: 400.0,
+                      height: 200.0,
+                      decoration: const BoxDecoration(
+                        color: Colors.black12,
+                      ),
+                      child: Center(
+                        child: Text(
+                          S.of(context).remoteLoading,
+                          style: const TextStyle(
+                            inherit: false,
+                            color: Colors.white,
+                            backgroundColor: Colors.transparent,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
         widget.content.isNotEmpty
             ? Positioned(
-                left: 50.0,
+                right: 300.0,
+                bottom: 80.0,
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 5.0,
+                        sigmaY: 5.0,
+                        tileMode: TileMode.clamp,
+                      ),
+                      child: Container(
+                        width: 150.0,
+                        height: 40.0,
+                        decoration: const BoxDecoration(
+                          color: Colors.black12,
+                        ),
+                        child: Center(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              S.of(context).settings,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                backgroundColor: Colors.transparent,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+        widget.content.isNotEmpty
+            ? Positioned(
+                left: 80.0,
                 bottom: 80.0,
                 width: 400.0,
                 height: 105.0,
@@ -240,7 +307,7 @@ class _StartPageState extends State<StartPage> {
             : Container(),
         widget.content.isNotEmpty
             ? Positioned(
-                left: 50.0,
+                left: 80.0,
                 bottom: 195.0,
                 width: 400.0,
                 height: 185.0,

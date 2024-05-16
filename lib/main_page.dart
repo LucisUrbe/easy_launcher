@@ -1,6 +1,8 @@
+import 'dart:ui';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/views/start.dart';
 import 'package:easy_launcher/utils/remote_api.dart';
 
@@ -28,6 +30,37 @@ class _MainPageState extends State<MainPage> {
           );
           sp = StartPage(
             content: map,
+          );
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 5.0,
+                  sigmaY: 5.0,
+                  tileMode: TileMode.clamp,
+                ),
+                child: Container(
+                  width: 400.0,
+                  height: 200.0,
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                  ),
+                  child: Center(
+                    child: Text(
+                      S.of(context).remoteFailed,
+                      style: const TextStyle(
+                        inherit: false,
+                        color: Colors.white,
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           );
         }
         return sp;

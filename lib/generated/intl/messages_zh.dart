@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a zh locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,18 +18,16 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'zh';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "activity": MessageLookupByLibrary.simpleMessage("Events"),
-        "announce": MessageLookupByLibrary.simpleMessage("Notices"),
-        "info": MessageLookupByLibrary.simpleMessage("Info"),
-        "launchGame": MessageLookupByLibrary.simpleMessage("Launch"),
-        "remoteFailed": MessageLookupByLibrary.simpleMessage(
-            "Failed to load remote contents."),
-        "remoteLoading": MessageLookupByLibrary.simpleMessage(
-            "Please wait while loading remote contents."),
-        "settings": MessageLookupByLibrary.simpleMessage("Settings")
+        "activity": MessageLookupByLibrary.simpleMessage("活动"),
+        "announce": MessageLookupByLibrary.simpleMessage("公告"),
+        "info": MessageLookupByLibrary.simpleMessage("资讯"),
+        "launchGame": MessageLookupByLibrary.simpleMessage("启动"),
+        "remoteFailed": MessageLookupByLibrary.simpleMessage("远程内容载入失败了。"),
+        "remoteLoading": MessageLookupByLibrary.simpleMessage("请稍等，正在载入远程内容。"),
+        "settings": MessageLookupByLibrary.simpleMessage("设置")
       };
 }
