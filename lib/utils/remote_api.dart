@@ -1,15 +1,19 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
 import 'package:easy_launcher/constants/useful.b91.dart';
-import 'package:easy_launcher/constants/cn_rel.dart';
+import 'package:easy_launcher/constants/rel.dart';
 
-Future<String> getRemoteContent() async {
-  final String url = await UsefulKV.get(CnRel.useful[0]);
+Future<String> getRemoteContent(Locale locale) async {
+  RelInterface r = OsRelInterface();
+  if (locale.languageCode == "zh") {
+    r = CnRelInterface();
+  }
+  final String url = await UsefulKV.get(r.useful[0]);
   final List<String> parameters = <String>[
-    'key=${await UsefulKV.get(CnRel.useful[1])}',
-    'filter_adv=${CnRel.filterAdv.toString()}',
-    'launcher_id=${CnRel.launcherId.toString()}',
-    'language=${CnRel.language}',
+    'key=${await UsefulKV.get(r.useful[1])}',
+    'filter_adv=${r.filterAdv.toString()}',
+    'launcher_id=${r.launcherId.toString()}',
+    'language=${r.language}',
   ];
   final Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
   final String httpPackageInfo = await http.read(httpPackageUrl);
@@ -24,8 +28,8 @@ ImageProvider getRemoteBGI(Map<String, dynamic> content) {
   return const AssetImage('lib/assets/background.png');
 }
 
-List<CnRelPost> getRemotePosts(Map<String, dynamic> content) {
-  List<CnRelPost> posts = [];
+List<RelPost> getRemotePosts(Map<String, dynamic> content) {
+  List<RelPost> posts = [];
   if (content['retcode'] == 0 && content['message'] == 'OK') {
     final List<dynamic> postsMap = content['data']['post'];
     for (final Map<String, dynamic> p in postsMap) {
@@ -39,7 +43,7 @@ List<CnRelPost> getRemotePosts(Map<String, dynamic> content) {
         t = PostType.activity;
       }
       posts.add(
-        CnRelPost(
+        RelPost(
           order: int.parse(p['order']!),
           postID: p['post_id']!,
           type: t,
@@ -53,13 +57,13 @@ List<CnRelPost> getRemotePosts(Map<String, dynamic> content) {
   return posts;
 }
 
-List<CnRelBanner> getRemoteBanners(Map<String, dynamic> content) {
-  List<CnRelBanner> banners = [];
+List<RelBanner> getRemoteBanners(Map<String, dynamic> content) {
+  List<RelBanner> banners = [];
   if (content['retcode'] == 0 && content['message'] == 'OK') {
     final List<dynamic> bannersMap = content['data']['banner'];
     for (final Map<String, dynamic> b in bannersMap) {
       banners.add(
-        CnRelBanner(
+        RelBanner(
           order: int.parse(b['order']!),
           imageURL: b['img']!,
           onClickURL: b['url']!,

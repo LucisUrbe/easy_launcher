@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_launcher/generated/l10n.dart';
-import 'package:easy_launcher/constants/cn_rel.dart';
+import 'package:easy_launcher/constants/rel.dart';
 import 'package:easy_launcher/utils/remote_api.dart';
 
 class StartPage extends StatefulWidget {
@@ -44,7 +44,7 @@ class _StartPageState extends State<StartPage> {
     }),
   );
 
-  List<List<Widget>> buildPosts(List<CnRelPost> posts) {
+  List<List<Widget>> buildPosts(List<RelPost> posts) {
     List<Tooltip> tipAnnounce = <Tooltip>[];
     List<Tooltip> tipInfo = <Tooltip>[];
     List<Tooltip> tipActivity = <Tooltip>[];
@@ -100,14 +100,14 @@ class _StartPageState extends State<StartPage> {
       image: AssetImage('lib/assets/background.png'),
     );
     List<List<Widget>> selectedPost = <List<Widget>>[];
-    List<CnRelBanner> banners = <CnRelBanner>[];
+    List<RelBanner> banners = <RelBanner>[];
     // Tip: use `widget.variable` to pass a variable between widgets.
     if (widget.content.isNotEmpty) {
       bg = DecorationImage(
         fit: BoxFit.cover,
         image: getRemoteBGI(widget.content),
       );
-      List<CnRelPost> posts = getRemotePosts(widget.content);
+      List<RelPost> posts = getRemotePosts(widget.content);
       posts.sort((a, b) => b.order.compareTo(a.order)); // descending
       selectedPost = buildPosts(posts);
       banners = getRemoteBanners(widget.content);
