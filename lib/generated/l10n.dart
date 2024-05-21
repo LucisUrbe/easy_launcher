@@ -80,16 +80,6 @@ class S {
     );
   }
 
-  /// `Settings`
-  String get settings {
-    return Intl.message(
-      'Settings',
-      name: 'settings',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Events`
   String get activity {
     return Intl.message(
@@ -115,6 +105,86 @@ class S {
     return Intl.message(
       'Info',
       name: 'info',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get close {
+    return Intl.message(
+      'Close',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show official banners`
+  String get showBannersTitle {
+    return Intl.message(
+      'Show official banners',
+      name: 'showBannersTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The banners are a series of images for advertisements.`
+  String get showBannersSubtitle {
+    return Intl.message(
+      'The banners are a series of images for advertisements.',
+      name: 'showBannersSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show official posts`
+  String get showPostsTitle {
+    return Intl.message(
+      'Show official posts',
+      name: 'showPostsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The posts are a series of hyperlinks for activities, etc.`
+  String get showPostsSubtitle {
+    return Intl.message(
+      'The posts are a series of hyperlinks for activities, etc.',
+      name: 'showPostsSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Custom language code`
+  String get languageCodeTitle {
+    return Intl.message(
+      'Custom language code',
+      name: 'languageCodeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The entries are from officially supported languages.`
+  String get languageCodeSubtitle {
+    return Intl.message(
+      'The entries are from officially supported languages.',
+      name: 'languageCodeSubtitle',
       desc: '',
       args: [],
     );

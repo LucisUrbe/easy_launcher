@@ -2,9 +2,16 @@
   "remoteLoading": "Please wait while loading remote contents.",
   "remoteFailed": "Failed to load remote contents.",
   "launchGame": "Launch",
-  "settings": "Settings",
   "activity": "Events",
   "announce": "Notices",
   "info": "Info",
+  "settings": "Settings",
+  "close": "Close",
+  "showBannersTitle": "Show official banners",
+  "showBannersSubtitle": "The banners are a series of images for advertisements.",
+  "showPostsTitle": "Show official posts",
+  "showPostsSubtitle": "The posts are a series of hyperlinks for activities, etc.",
+  "languageCodeTitle": "Custom language code",
+  "languageCodeSubtitle": "The entries are from officially supported languages.",
   "@@locale": "en"
 }

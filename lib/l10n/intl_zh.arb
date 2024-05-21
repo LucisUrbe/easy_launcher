@@ -2,9 +2,16 @@
   "remoteLoading": "请稍等，正在载入远程内容。",
   "remoteFailed": "远程内容载入失败了。",
   "launchGame": "启动",
-  "settings": "设置",
   "activity": "活动",
   "announce": "公告",
   "info": "资讯",
+  "settings": "设置",
+  "close": "关闭",
+  "showBannersTitle": "显示官方横幅",
+  "showBannersSubtitle": "横幅是用于宣传的一组图片。",
+  "showPostsTitle": "显示官方公告",
+  "showPostsSubtitle": "公告是用于宣传的一组超链接。",
+  "languageCodeTitle": "自定义语言码",
+  "languageCodeSubtitle": "选项来源于官方所支持的语言。",
   "@@locale": "zh"
 }

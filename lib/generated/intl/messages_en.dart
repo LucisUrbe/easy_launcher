@@ -24,12 +24,25 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activity": MessageLookupByLibrary.simpleMessage("Events"),
         "announce": MessageLookupByLibrary.simpleMessage("Notices"),
+        "close": MessageLookupByLibrary.simpleMessage("Close"),
         "info": MessageLookupByLibrary.simpleMessage("Info"),
+        "languageCodeSubtitle": MessageLookupByLibrary.simpleMessage(
+            "The entries are from officially supported languages."),
+        "languageCodeTitle":
+            MessageLookupByLibrary.simpleMessage("Custom language code"),
         "launchGame": MessageLookupByLibrary.simpleMessage("Launch"),
         "remoteFailed": MessageLookupByLibrary.simpleMessage(
             "Failed to load remote contents."),
         "remoteLoading": MessageLookupByLibrary.simpleMessage(
             "Please wait while loading remote contents."),
-        "settings": MessageLookupByLibrary.simpleMessage("Settings")
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "showBannersSubtitle": MessageLookupByLibrary.simpleMessage(
+            "The banners are a series of images for advertisements."),
+        "showBannersTitle":
+            MessageLookupByLibrary.simpleMessage("Show official banners"),
+        "showPostsSubtitle": MessageLookupByLibrary.simpleMessage(
+            "The posts are a series of hyperlinks for activities, etc."),
+        "showPostsTitle":
+            MessageLookupByLibrary.simpleMessage("Show official posts")
       };
 }

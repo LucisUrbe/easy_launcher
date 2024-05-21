@@ -24,10 +24,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activity": MessageLookupByLibrary.simpleMessage("活动"),
         "announce": MessageLookupByLibrary.simpleMessage("公告"),
+        "close": MessageLookupByLibrary.simpleMessage("关闭"),
         "info": MessageLookupByLibrary.simpleMessage("资讯"),
+        "languageCodeSubtitle":
+            MessageLookupByLibrary.simpleMessage("选项来源于官方所支持的语言。"),
+        "languageCodeTitle": MessageLookupByLibrary.simpleMessage("自定义语言码"),
         "launchGame": MessageLookupByLibrary.simpleMessage("启动"),
         "remoteFailed": MessageLookupByLibrary.simpleMessage("远程内容载入失败了。"),
         "remoteLoading": MessageLookupByLibrary.simpleMessage("请稍等，正在载入远程内容。"),
-        "settings": MessageLookupByLibrary.simpleMessage("设置")
+        "settings": MessageLookupByLibrary.simpleMessage("设置"),
+        "showBannersSubtitle":
+            MessageLookupByLibrary.simpleMessage("横幅是用于宣传的一组图片。"),
+        "showBannersTitle": MessageLookupByLibrary.simpleMessage("显示官方横幅"),
+        "showPostsSubtitle":
+            MessageLookupByLibrary.simpleMessage("公告是用于宣传的一组超链接。"),
+        "showPostsTitle": MessageLookupByLibrary.simpleMessage("显示官方公告")
       };
 }

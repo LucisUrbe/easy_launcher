@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
+import 'package:easy_launcher/constants/style.dart' as style;
 import 'package:easy_launcher/constants/useful.b91.dart';
 import 'package:easy_launcher/constants/rel.dart';
 
@@ -16,7 +17,7 @@ Future<String> getRemoteContent(Locale locale) async {
     'language=${r.language}',
   ];
   final Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
-  final String httpPackageInfo = await http.read(httpPackageUrl);
+  final Future<String> httpPackageInfo = http.read(httpPackageUrl);
   return httpPackageInfo;
 }
 
@@ -25,7 +26,7 @@ ImageProvider getRemoteBGI(Map<String, dynamic> content) {
     // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
     return NetworkImage(content['data']['adv']['background']);
   }
-  return const AssetImage('lib/assets/background.png');
+  return const AssetImage(style.sAssetBGI);
 }
 
 List<RelPost> getRemotePosts(Map<String, dynamic> content) {

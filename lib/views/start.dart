@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_launcher/constants/style.dart' as style;
-import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/constants/rel.dart';
+import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/utils/remote_api.dart';
+import 'package:easy_launcher/views/settings.dart';
 
 class StartPage extends StatefulWidget {
   final Map<String, dynamic> content;
@@ -28,17 +29,17 @@ class _StartPageState extends State<StartPage> {
   // because Dart does not support referring or setting states by just passing
   // function parameters.
   ButtonStyle bs = ButtonStyle(
-    shape: const MaterialStatePropertyAll(
+    shape: const WidgetStatePropertyAll(
       CircleBorder(),
     ),
-    padding: MaterialStateProperty.all(
+    padding: WidgetStateProperty.all(
       const EdgeInsets.all(style.dButtonMargin),
     ),
-    backgroundColor: MaterialStatePropertyAll(
+    backgroundColor: WidgetStatePropertyAll(
       Colors.black.withOpacity(style.dOpacity),
     ),
-    overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-      if (states.contains(MaterialState.pressed)) {
+    overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+      if (states.contains(WidgetState.pressed)) {
         return Colors.grey.withOpacity(style.dOpacity);
       }
       return null;
@@ -210,7 +211,7 @@ class _StartPageState extends State<StartPage> {
                         ),
                         child: Center(
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () => buildSettings(context),
                             child: Text(
                               S.of(context).settings,
                               style: const TextStyle(
