@@ -1,20 +1,23 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_launcher/constants/style.dart' as style;
 import 'package:easy_launcher/constants/useful.b91.dart';
 import 'package:easy_launcher/constants/rel.dart';
 
 Future<String> getRemoteContent(Locale locale) async {
-  RelInterface r = OsRelInterface();
   if (locale.languageCode == "zh") {
-    r = CnRelInterface();
+    style.relIF = CnRelInterface();
+  } else {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    style.relIF.language = prefs.getString('languageCode') ?? 'en-us';
   }
-  final String url = await UsefulKV.get(r.useful[0]);
+  final String url = await UsefulKV.get(style.relIF.useful[0]);
   final List<String> parameters = <String>[
-    'key=${await UsefulKV.get(r.useful[1])}',
-    'filter_adv=${r.filterAdv.toString()}',
-    'launcher_id=${r.launcherId.toString()}',
-    'language=${r.language}',
+    'key=${await UsefulKV.get(style.relIF.useful[1])}',
+    'filter_adv=${style.relIF.filterAdv.toString()}',
+    'launcher_id=${style.relIF.launcherId.toString()}',
+    'language=${style.relIF.language}',
   ];
   final Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
   final Future<String> httpPackageInfo = http.read(httpPackageUrl);

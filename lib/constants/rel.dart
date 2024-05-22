@@ -15,7 +15,7 @@ class OsRel {
   ];
   static const bool filterAdv = false;
   static const int launcherId = 10;
-  static const String language = 'en-us';
+  static String language = 'en-us';
 }
 
 abstract class RelInterface {
@@ -60,7 +60,7 @@ class OsRelInterface implements RelInterface {
   @override
   String get language => OsRel.language;
   @override
-  set language(String _) {}
+  set language(String value) => OsRel.language = value;
 }
 
 enum PostType {

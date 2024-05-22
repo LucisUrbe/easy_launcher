@@ -1,3 +1,4 @@
+import 'package:easy_launcher/constants/rel.dart';
 
 const String sAppTitle = "easy_launcher";
 
@@ -58,3 +59,23 @@ const double dCarouselArrowRadius = 5.0;
 const double dCarouselArrowTop = 80.0;
 
 const double dZero = 0.0;
+
+const List<String> supportedLanguage = <String>[
+  "de-de",
+  "en-us",
+  "es-es",
+  "fr-fr",
+  "id-id",
+  "it-it",
+  "ja-jp",
+  "ko-kr",
+  "pt-pt",
+  "ru-ru",
+  "th-th",
+  "tr-tr",
+  "vi-vn",
+  "zh-cn",
+  "zh-tw",
+];
+
+RelInterface relIF = OsRelInterface();
