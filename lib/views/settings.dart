@@ -50,7 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<SharedPreferences>(
       future: _prefs,
       builder: (context, AsyncSnapshot<SharedPreferences> snapshot) {
         switch (snapshot.connectionState) {
