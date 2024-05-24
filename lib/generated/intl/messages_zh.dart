@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "launchGame": MessageLookupByLibrary.simpleMessage("启动"),
         "remoteFailed": MessageLookupByLibrary.simpleMessage("远程内容载入失败了。"),
         "remoteLoading": MessageLookupByLibrary.simpleMessage("请稍等，正在载入远程内容。"),
+        "restart": MessageLookupByLibrary.simpleMessage("重启界面"),
         "settings": MessageLookupByLibrary.simpleMessage("设置"),
         "showBannersSubtitle":
             MessageLookupByLibrary.simpleMessage("横幅是用于宣传的一组图片。"),

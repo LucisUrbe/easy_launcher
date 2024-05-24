@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Failed to load remote contents."),
         "remoteLoading": MessageLookupByLibrary.simpleMessage(
             "Please wait while loading remote contents."),
+        "restart": MessageLookupByLibrary.simpleMessage("Restart App"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "showBannersSubtitle": MessageLookupByLibrary.simpleMessage(
             "The banners are a series of images for advertisements."),

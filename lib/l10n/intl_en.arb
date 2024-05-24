@@ -6,6 +6,7 @@
   "announce": "Notices",
   "info": "Info",
   "settings": "Settings",
+  "restart": "Restart App",
   "close": "Close",
   "showBannersTitle": "Show official banners",
   "showBannersSubtitle": "The banners are a series of images for advertisements.",

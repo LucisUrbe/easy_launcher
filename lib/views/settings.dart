@@ -1,4 +1,5 @@
 import 'package:easy_launcher/constants/rel.dart';
+import 'package:easy_launcher/restartable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_launcher/constants/style.dart' as style;
@@ -21,6 +22,13 @@ Future<void> buildSettings(BuildContext context) {
             children: <Widget>[
               Center(child: Text(S.of(context).settings)),
               const SettingsPage(),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  RestartableApp.restartApp(context);
+                },
+                child: Text(S.of(context).restart),
+              ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);

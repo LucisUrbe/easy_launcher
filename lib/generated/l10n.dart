@@ -120,6 +120,16 @@ class S {
     );
   }
 
+  /// `Restart App`
+  String get restart {
+    return Intl.message(
+      'Restart App',
+      name: 'restart',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Close`
   String get close {
     return Intl.message(
