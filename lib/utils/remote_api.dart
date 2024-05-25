@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:easy_launcher/constants/style.dart' as style;
+import 'package:easy_launcher/constants/global.dart' as style;
 import 'package:easy_launcher/constants/useful.b91.dart';
 import 'package:easy_launcher/constants/rel.dart';
 

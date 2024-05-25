@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:easy_launcher/constants/style.dart' as style;
+import 'package:easy_launcher/constants/global.dart' as style;
 import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/views/start.dart';
 import 'package:easy_launcher/utils/remote_api.dart';

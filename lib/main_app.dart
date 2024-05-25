@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl_standalone.dart';
-import 'package:easy_launcher/constants/style.dart' as style;
+import 'package:easy_launcher/constants/global.dart' as global;
 import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/main_page.dart';
 
@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
-            title: style.sAppTitle,
+            title: global.sAppTitle,
             theme: ThemeData(
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),

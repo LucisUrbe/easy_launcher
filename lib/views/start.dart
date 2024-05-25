@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:easy_launcher/constants/style.dart' as style;
+import 'package:easy_launcher/constants/global.dart' as global;
 import 'package:easy_launcher/constants/rel.dart';
 import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/utils/remote_api.dart';
@@ -34,14 +34,14 @@ class _StartPageState extends State<StartPage> {
       CircleBorder(),
     ),
     padding: WidgetStateProperty.all(
-      const EdgeInsets.all(style.dButtonMargin),
+      const EdgeInsets.all(global.dButtonMargin),
     ),
     backgroundColor: WidgetStatePropertyAll(
-      Colors.black.withOpacity(style.dOpacity),
+      Colors.black.withOpacity(global.dOpacity),
     ),
     overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
       if (states.contains(WidgetState.pressed)) {
-        return Colors.grey.withOpacity(style.dOpacity);
+        return Colors.grey.withOpacity(global.dOpacity);
       }
       return null;
     }),
@@ -53,7 +53,7 @@ class _StartPageState extends State<StartPage> {
     List<Tooltip> tipActivity = <Tooltip>[];
     for (final p in posts) {
       Tooltip t = Tooltip(
-        waitDuration: const Duration(milliseconds: style.iWaitMS),
+        waitDuration: const Duration(milliseconds: global.iWaitMS),
         message: p.title,
         child: RichText(
           overflow: TextOverflow.ellipsis,
@@ -81,12 +81,12 @@ class _StartPageState extends State<StartPage> {
           ),
         ),
       );
-      if (p.type == PostType.announce && tipAnnounce.length < style.iMaxPosts) {
+      if (p.type == PostType.announce && tipAnnounce.length < global.iMaxPosts) {
         tipAnnounce.add(t);
-      } else if (p.type == PostType.info && tipInfo.length < style.iMaxPosts) {
+      } else if (p.type == PostType.info && tipInfo.length < global.iMaxPosts) {
         tipInfo.add(t);
       } else if (p.type == PostType.activity &&
-          tipActivity.length < style.iMaxPosts) {
+          tipActivity.length < global.iMaxPosts) {
         tipActivity.add(t);
       }
     }
@@ -101,7 +101,7 @@ class _StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     DecorationImage bg = const DecorationImage(
       fit: BoxFit.cover,
-      image: AssetImage(style.sAssetBGI),
+      image: AssetImage(global.sAssetBGI),
     );
     List<List<Widget>> selectedPost = <List<Widget>>[];
     List<RelBanner> banners = <RelBanner>[];
@@ -124,20 +124,20 @@ class _StartPageState extends State<StartPage> {
           ),
         ),
         Positioned(
-          right: style.dButtonRight,
-          bottom: style.dButtonBottom,
+          right: global.dButtonRight,
+          bottom: global.dButtonBottom,
           child: Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(style.dButtonRadius),
+              borderRadius: BorderRadius.circular(global.dButtonRadius),
               child: BackdropFilter(
                 filter: ImageFilter.blur(
-                  sigmaX: style.dBlurSigma,
-                  sigmaY: style.dBlurSigma,
+                  sigmaX: global.dBlurSigma,
+                  sigmaY: global.dBlurSigma,
                   tileMode: TileMode.clamp,
                 ),
                 child: Container(
-                  width: style.dButtonW,
-                  height: style.dButtonH,
+                  width: global.dButtonW,
+                  height: global.dButtonH,
                   decoration: const BoxDecoration(
                     color: Colors.black12,
                   ),
@@ -159,21 +159,21 @@ class _StartPageState extends State<StartPage> {
           ),
         ),
         Positioned(
-          right: 2.0 * style.dButtonRight + style.dButtonDivW,
+          right: 2.0 * global.dButtonRight + global.dButtonDivW,
           // This can be simplified as Row + Divider.
-          bottom: style.dButtonBottom,
+          bottom: global.dButtonBottom,
           child: Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(style.dButtonRadius),
+              borderRadius: BorderRadius.circular(global.dButtonRadius),
               child: BackdropFilter(
                 filter: ImageFilter.blur(
-                  sigmaX: style.dBlurSigma,
-                  sigmaY: style.dBlurSigma,
+                  sigmaX: global.dBlurSigma,
+                  sigmaY: global.dBlurSigma,
                   tileMode: TileMode.clamp,
                 ),
                 child: Container(
-                  width: style.dButtonW,
-                  height: style.dButtonH,
+                  width: global.dButtonW,
+                  height: global.dButtonH,
                   decoration: const BoxDecoration(
                     color: Colors.black12,
                   ),
@@ -201,16 +201,16 @@ class _StartPageState extends State<StartPage> {
             if (snapshot.hasData &&
                 (snapshot.data!.getBool('showPosts') ?? true)) {
               return Positioned(
-                left: style.dButtonLeft,
-                bottom: style.dButtonBottom,
-                width: style.dPostW,
-                height: style.dPostH,
+                left: global.dButtonLeft,
+                bottom: global.dButtonBottom,
+                width: global.dPostW,
+                height: global.dPostH,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(style.dPostRadius),
+                  borderRadius: BorderRadius.circular(global.dPostRadius),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
-                      sigmaX: style.dBlurSigma,
-                      sigmaY: style.dBlurSigma,
+                      sigmaX: global.dBlurSigma,
+                      sigmaY: global.dBlurSigma,
                       tileMode: TileMode.clamp,
                     ),
                     child: Container(
@@ -221,7 +221,7 @@ class _StartPageState extends State<StartPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const Divider(
-                            height: style.dPostDivH,
+                            height: global.dPostDivH,
                             color: Colors.transparent,
                           ),
                           Row(
@@ -271,7 +271,7 @@ class _StartPageState extends State<StartPage> {
                             ],
                           ),
                           const Divider(
-                            height: style.dPostDivH,
+                            height: global.dPostDivH,
                             color: Colors.transparent,
                           ),
                           Column(
@@ -295,16 +295,16 @@ class _StartPageState extends State<StartPage> {
             if (snapshot.hasData &&
                 (snapshot.data!.getBool('showBanners') ?? true)) {
               return Positioned(
-                left: style.dButtonLeft,
-                bottom: style.dBannerBottom,
-                width: style.dBannerW,
-                height: style.dBannerH,
+                left: global.dButtonLeft,
+                bottom: global.dBannerBottom,
+                width: global.dBannerW,
+                height: global.dBannerH,
                 child: CarouselSlider(
                   carouselController: _controller,
                   options: CarouselOptions(
-                    height: style.dCarouselImageH,
-                    aspectRatio: style.dCarouselImageW / style.dCarouselImageH,
-                    viewportFraction: style.dCarouselViewpointFraction,
+                    height: global.dCarouselImageH,
+                    aspectRatio: global.dCarouselImageW / global.dCarouselImageH,
+                    viewportFraction: global.dCarouselViewpointFraction,
                     initialPage: 0,
                     enableInfiniteScroll: false,
                     reverse: false,
@@ -329,19 +329,19 @@ class _StartPageState extends State<StartPage> {
                               children: <Widget>[
                                 ClipRRect(
                                   borderRadius: const BorderRadius.all(
-                                    Radius.circular(style.dCarouselArrowRadius),
+                                    Radius.circular(global.dCarouselArrowRadius),
                                   ),
                                   child: Image.network(
                                     b.imageURL,
                                     fit: BoxFit.cover,
-                                    width: style.dCarouselImageW,
-                                    height: style.dCarouselImageH,
+                                    width: global.dCarouselImageW,
+                                    height: global.dCarouselImageH,
                                   ),
                                 ),
                                 isHovering
                                     ? Positioned(
-                                        right: style.dZero,
-                                        top: style.dCarouselArrowTop,
+                                        right: global.dZero,
+                                        top: global.dCarouselArrowTop,
                                         child: ElevatedButton(
                                           onPressed: () {
                                             _controller.nextPage();
@@ -356,8 +356,8 @@ class _StartPageState extends State<StartPage> {
                                     : Container(),
                                 isHovering
                                     ? Positioned(
-                                        left: style.dZero,
-                                        top: style.dCarouselArrowTop,
+                                        left: global.dZero,
+                                        top: global.dCarouselArrowTop,
                                         child: ElevatedButton(
                                           onPressed: () {
                                             _controller.previousPage();
@@ -392,16 +392,16 @@ class _StartPageState extends State<StartPage> {
         ),
         Center(
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(style.dDialogRadius),
+            borderRadius: BorderRadius.circular(global.dDialogRadius),
             child: BackdropFilter(
               filter: ImageFilter.blur(
-                sigmaX: style.dBlurSigma,
-                sigmaY: style.dBlurSigma,
+                sigmaX: global.dBlurSigma,
+                sigmaY: global.dBlurSigma,
                 tileMode: TileMode.clamp,
               ),
               child: Container(
-                width: style.dDialogW,
-                height: style.dDialogH,
+                width: global.dDialogW,
+                height: global.dDialogH,
                 decoration: const BoxDecoration(
                   color: Colors.black12,
                 ),

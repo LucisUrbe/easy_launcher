@@ -2,7 +2,7 @@ import 'package:easy_launcher/constants/rel.dart';
 import 'package:easy_launcher/restartable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:easy_launcher/constants/style.dart' as style;
+import 'package:easy_launcher/constants/global.dart' as global;
 import 'package:easy_launcher/generated/l10n.dart';
 
 Future<void> buildSettings(BuildContext context) {
@@ -10,11 +10,11 @@ Future<void> buildSettings(BuildContext context) {
     context: context,
     builder: (BuildContext context) => Dialog(
       insetPadding: const EdgeInsets.symmetric(
-        horizontal: 100.0,
-        vertical: 150.0,
+        horizontal: global.dDialogSpaceH,
+        vertical: global.dDialogSpaceV,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(global.dDialogChildPadding),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -118,7 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
-                style.relIF is OsRelInterface
+                global.relIF is OsRelInterface
                     ? Row(
                         children: [
                           Expanded(
@@ -141,7 +141,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           DropdownButton(
                             value: languageCode,
-                            items: style.supportedLanguage.map((String value) {
+                            items: global.supportedLanguage.map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(

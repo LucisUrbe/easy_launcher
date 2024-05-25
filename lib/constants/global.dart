@@ -79,3 +79,9 @@ const List<String> supportedLanguage = <String>[
 ];
 
 RelInterface relIF = OsRelInterface();
+
+const double dDialogSpaceH = 100.0;
+
+const double dDialogSpaceV = 150.0;
+
+const double dDialogChildPadding = 20.0;
