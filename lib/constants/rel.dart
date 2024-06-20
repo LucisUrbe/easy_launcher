@@ -1,27 +1,23 @@
 class CnRel {
   static const List<String> useful = <String>[
-    '56d92f827361cbcf2ab2b5988118a35f',
-    '3fb7959f15aa34293dd9800993c10f89',
+    'c109ae56e9d2c13f0f5f3245fb548c0d',
+    'ce30aa47577fe6d11d4a91d0e0133b9d',
+    '4aa177fd18a020cf7735a89025dc690a',
   ];
-  static const bool filterAdv = false;
-  static const int launcherId = 18;
   static const String language = 'zh-cn';
 }
 
 class OsRel {
   static const List<String> useful = <String>[
-    'a4e7bd2c0a31188bf490a9ecc3909d5f',
-    'a124749e48d23604f2a38b5fefef27e4',
+    '0b1d24cbf04c048f69de952cd44c1785',
+    'cdba69916039acac927e0f9c86c3eb9f',
+    '4aa177fd18a020cf7735a89025dc690a',
   ];
-  static const bool filterAdv = false;
-  static const int launcherId = 10;
   static String language = 'en-us';
 }
 
 abstract class RelInterface {
   late List<String> useful;
-  late bool filterAdv;
-  late int launcherId;
   late String language;
 }
 
@@ -30,14 +26,6 @@ class CnRelInterface implements RelInterface {
   List<String> get useful => CnRel.useful;
   @override
   set useful(List<String> _) {}
-  @override
-  bool get filterAdv => CnRel.filterAdv;
-  @override
-  set filterAdv(bool _) {}
-  @override
-  int get launcherId => CnRel.launcherId;
-  @override
-  set launcherId(int _) {}
   @override
   String get language => CnRel.language;
   @override
@@ -49,14 +37,6 @@ class OsRelInterface implements RelInterface {
   List<String> get useful => OsRel.useful;
   @override
   set useful(List<String> _) {}
-  @override
-  bool get filterAdv => OsRel.filterAdv;
-  @override
-  set filterAdv(bool _) {}
-  @override
-  int get launcherId => OsRel.launcherId;
-  @override
-  set launcherId(int _) {}
   @override
   String get language => OsRel.language;
   @override

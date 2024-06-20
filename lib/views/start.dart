@@ -81,7 +81,8 @@ class _StartPageState extends State<StartPage> {
           ),
         ),
       );
-      if (p.type == PostType.announce && tipAnnounce.length < global.iMaxPosts) {
+      if (p.type == PostType.announce &&
+          tipAnnounce.length < global.iMaxPosts) {
         tipAnnounce.add(t);
       } else if (p.type == PostType.info && tipInfo.length < global.iMaxPosts) {
         tipInfo.add(t);
@@ -303,7 +304,8 @@ class _StartPageState extends State<StartPage> {
                   carouselController: _controller,
                   options: CarouselOptions(
                     height: global.dCarouselImageH,
-                    aspectRatio: global.dCarouselImageW / global.dCarouselImageH,
+                    aspectRatio:
+                        global.dCarouselImageW / global.dCarouselImageH,
                     viewportFraction: global.dCarouselViewpointFraction,
                     initialPage: 0,
                     enableInfiniteScroll: false,
@@ -329,7 +331,8 @@ class _StartPageState extends State<StartPage> {
                               children: <Widget>[
                                 ClipRRect(
                                   borderRadius: const BorderRadius.all(
-                                    Radius.circular(global.dCarouselArrowRadius),
+                                    Radius.circular(
+                                        global.dCarouselArrowRadius),
                                   ),
                                   child: Image.network(
                                     b.imageURL,

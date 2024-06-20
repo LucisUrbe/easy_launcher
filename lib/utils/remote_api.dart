@@ -12,11 +12,10 @@ Future<String> getRemoteContent(Locale locale) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     style.relIF.language = prefs.getString('languageCode') ?? 'en-us';
   }
-  final String url = await UsefulKV.get(style.relIF.useful[0]);
+  final String url = await UsefulKV.get(style.relIF.useful[0]) +
+      await UsefulKV.get(style.relIF.useful[2]); // TODO: more cases.
   final List<String> parameters = <String>[
-    'key=${await UsefulKV.get(style.relIF.useful[1])}',
-    'filter_adv=${style.relIF.filterAdv.toString()}',
-    'launcher_id=${style.relIF.launcherId.toString()}',
+    'launcher_id=${await UsefulKV.get(style.relIF.useful[1])}',
     'language=${style.relIF.language}',
   ];
   final Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
@@ -27,14 +26,25 @@ Future<String> getRemoteContent(Locale locale) async {
 ImageProvider getRemoteBGI(Map<String, dynamic> content) {
   if (content['retcode'] == 0 && content['message'] == 'OK') {
     // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
-    return NetworkImage(content['data']['adv']['background']);
+    print(content);
+    return NetworkImage(
+        content
+        ['data']
+        ['game_info_list']
+        [2]
+        ['backgrounds']
+        [0]
+        ['background']
+        ['url']
+    );
+    // TODO: THE CONST NUMBER IS NOT ROBUST.
   }
   return const AssetImage(style.sAssetBGI);
 }
 
 List<RelPost> getRemotePosts(Map<String, dynamic> content) {
   List<RelPost> posts = [];
-  if (content['retcode'] == 0 && content['message'] == 'OK') {
+  if (content['retcode'] == 0 && content['message'] != 'OK') {
     final List<dynamic> postsMap = content['data']['post'];
     for (final Map<String, dynamic> p in postsMap) {
       PostType t = PostType.info;
@@ -63,7 +73,7 @@ List<RelPost> getRemotePosts(Map<String, dynamic> content) {
 
 List<RelBanner> getRemoteBanners(Map<String, dynamic> content) {
   List<RelBanner> banners = [];
-  if (content['retcode'] == 0 && content['message'] == 'OK') {
+  if (content['retcode'] == 0 && content['message'] != 'OK') {
     final List<dynamic> bannersMap = content['data']['banner'];
     for (final Map<String, dynamic> b in bannersMap) {
       banners.add(
