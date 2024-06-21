@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,38 +7,56 @@ import 'package:easy_launcher/constants/global.dart' as style;
 import 'package:easy_launcher/constants/useful.b91.dart';
 import 'package:easy_launcher/constants/rel.dart';
 
-Future<String> getRemoteContent(Locale locale) async {
+Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
   if (locale.languageCode == "zh") {
     style.relIF = CnRelInterface();
   } else {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     style.relIF.language = prefs.getString('languageCode') ?? 'en-us';
   }
-  final String url = await UsefulKV.get(style.relIF.useful[0]) +
-      await UsefulKV.get(style.relIF.useful[2]); // TODO: more cases.
-  final List<String> parameters = <String>[
+  String url = await UsefulKV.get(style.relIF.useful[0]) +
+      await UsefulKV.get(style.relIF.useful[2]);
+  List<String> parameters = <String>[
     'launcher_id=${await UsefulKV.get(style.relIF.useful[1])}',
     'language=${style.relIF.language}',
   ];
-  final Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
-  final Future<String> httpPackageInfo = http.read(httpPackageUrl);
-  return httpPackageInfo;
+  Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
+  Future<String> httpPackageInfo = http.read(httpPackageUrl);
+  Map<String, dynamic> map = json.decode(
+    utf8.decode(
+      (await httpPackageInfo).codeUnits,
+    ),
+  );
+  if (map['retcode'] == 0 && map['message'] == 'OK') {
+    // TODO: THE CONST NUMBER IS NOT ROBUST.
+    url = await UsefulKV.get(style.relIF.useful[0]) +
+        await UsefulKV.get(style.relIF.useful[3]);
+    String gameID = map['data']['game_info_list'][2]['game']['id'];
+    parameters = <String>[
+      'launcher_id=${await UsefulKV.get(style.relIF.useful[1])}',
+      'game_id=$gameID',
+      'language=${style.relIF.language}',
+    ];
+    httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
+    httpPackageInfo = http.read(httpPackageUrl);
+    Map<String, dynamic> toAdd = json.decode(
+      utf8.decode(
+        (await httpPackageInfo).codeUnits,
+      ),
+    );
+    if (toAdd['retcode'] == 0 && toAdd['message'] == 'OK') {
+      map['data'].addAll(toAdd['data']);
+    }
+  }
+  return map;
 }
 
 ImageProvider getRemoteBGI(Map<String, dynamic> content) {
   if (content['retcode'] == 0 && content['message'] == 'OK') {
     // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
     print(content);
-    return NetworkImage(
-        content
-        ['data']
-        ['game_info_list']
-        [2]
-        ['backgrounds']
-        [0]
-        ['background']
-        ['url']
-    );
+    return NetworkImage(content['data']['game_info_list'][2]['backgrounds'][0]
+        ['background']['url']);
     // TODO: THE CONST NUMBER IS NOT ROBUST.
   }
   return const AssetImage(style.sAssetBGI);
@@ -44,8 +64,8 @@ ImageProvider getRemoteBGI(Map<String, dynamic> content) {
 
 List<RelPost> getRemotePosts(Map<String, dynamic> content) {
   List<RelPost> posts = [];
-  if (content['retcode'] == 0 && content['message'] != 'OK') {
-    final List<dynamic> postsMap = content['data']['post'];
+  if (content['retcode'] == 0 && content['message'] == 'OK') {
+    final List<dynamic> postsMap = content['data']['content']['posts'];
     for (final Map<String, dynamic> p in postsMap) {
       PostType t = PostType.info;
       String s = p['type']!;
@@ -58,12 +78,11 @@ List<RelPost> getRemotePosts(Map<String, dynamic> content) {
       }
       posts.add(
         RelPost(
-          order: int.parse(p['order']!),
-          postID: p['post_id']!,
+          id: p['id'],
           type: t,
           title: p['title']!,
-          url: p['url']!,
-          showTime: p['show_time']!,
+          link: p['link']!,
+          date: p['date']!,
         ),
       );
     }
@@ -73,16 +92,14 @@ List<RelPost> getRemotePosts(Map<String, dynamic> content) {
 
 List<RelBanner> getRemoteBanners(Map<String, dynamic> content) {
   List<RelBanner> banners = [];
-  if (content['retcode'] == 0 && content['message'] != 'OK') {
-    final List<dynamic> bannersMap = content['data']['banner'];
+  if (content['retcode'] == 0 && content['message'] == 'OK') {
+    final List<dynamic> bannersMap = content['data']['content']['banners'];
     for (final Map<String, dynamic> b in bannersMap) {
       banners.add(
         RelBanner(
-          order: int.parse(b['order']!),
-          imageURL: b['img']!,
-          onClickURL: b['url']!,
-          bannerID: b['banner_id']!,
-          name: b['name']!,
+          id: b['id']!,
+          imageURL: b['image']['url']!,
+          onClickURL: b['image']['link']!,
         ),
       );
     }

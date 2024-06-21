@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:easy_launcher/constants/global.dart' as style;
@@ -21,9 +20,10 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: getRemoteContent(widget.locale),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+    return FutureBuilder<Map<String, dynamic>>(
+      future: getRemoteInfo(widget.locale),
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
           case ConnectionState.waiting:
@@ -31,9 +31,7 @@ class _MainPageState extends State<MainPage> {
           case ConnectionState.active:
           case ConnectionState.done:
             if (snapshot.hasData) {
-              Map<String, dynamic> map =
-                  json.decode(utf8.decode(snapshot.data!.codeUnits));
-              return StartPage(content: map);
+              return StartPage(content: snapshot.data!);
             }
             if (snapshot.hasError) {
               return Center(

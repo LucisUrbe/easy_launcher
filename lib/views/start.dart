@@ -60,7 +60,7 @@ class _StartPageState extends State<StartPage> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: "   ${p.showTime}   ", // it is a TEMPORARY way to align
+                text: "   ${p.date}   ", // it is a TEMPORARY way to align
                 style: const TextStyle(
                   color: Colors.white54,
                 ),
@@ -72,8 +72,8 @@ class _StartPageState extends State<StartPage> {
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
-                    if (!await launchUrl(Uri.parse(p.url))) {
-                      throw Exception('Could not launch ${p.url}');
+                    if (!await launchUrl(Uri.parse(p.link))) {
+                      throw Exception('Could not launch ${p.link}');
                     }
                   },
               ),
@@ -114,10 +114,10 @@ class _StartPageState extends State<StartPage> {
         image: getRemoteBGI(widget.content),
       );
       List<RelPost> posts = getRemotePosts(widget.content);
-      posts.sort((a, b) => b.order.compareTo(a.order)); // descending
+      //posts.sort((a, b) => b.order.compareTo(a.order)); // descending
       selectedPost = buildPosts(posts);
       banners = getRemoteBanners(widget.content);
-      banners.sort((a, b) => b.order.compareTo(a.order)); // descending
+      //banners.sort((a, b) => b.order.compareTo(a.order)); // descending
       stacks.addAll([
         Container(
           decoration: BoxDecoration(
