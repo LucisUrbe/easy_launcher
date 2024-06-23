@@ -114,10 +114,8 @@ class _StartPageState extends State<StartPage> {
         image: getRemoteBGI(widget.content),
       );
       List<RelPost> posts = getRemotePosts(widget.content);
-      //posts.sort((a, b) => b.order.compareTo(a.order)); // descending
       selectedPost = buildPosts(posts);
       banners = getRemoteBanners(widget.content);
-      //banners.sort((a, b) => b.order.compareTo(a.order)); // descending
       stacks.addAll([
         Container(
           decoration: BoxDecoration(

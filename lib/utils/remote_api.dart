@@ -7,54 +7,57 @@ import 'package:easy_launcher/constants/global.dart' as style;
 import 'package:easy_launcher/constants/useful.b91.dart';
 import 'package:easy_launcher/constants/rel.dart';
 
+Future<Map<String, dynamic>> getRemoteJSON(
+  String url,
+  List<String> parameters,
+) async {
+  final Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
+  final Future<String> httpPackageInfo = http.read(httpPackageUrl);
+  return json.decode(utf8.decode((await httpPackageInfo).codeUnits));
+}
+
 Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
+  // Set the interface according to the locale.
   if (locale.languageCode == "zh") {
     style.relIF = CnRelInterface();
   } else {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     style.relIF.language = prefs.getString('languageCode') ?? 'en-us';
   }
+  // Assemble the URI and get the response from the Internet.
   String url = await UsefulKV.get(style.relIF.useful[0]) +
       await UsefulKV.get(style.relIF.useful[2]);
   List<String> parameters = <String>[
     'launcher_id=${await UsefulKV.get(style.relIF.useful[1])}',
     'language=${style.relIF.language}',
   ];
-  Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
-  Future<String> httpPackageInfo = http.read(httpPackageUrl);
-  Map<String, dynamic> map = json.decode(
-    utf8.decode(
-      (await httpPackageInfo).codeUnits,
-    ),
-  );
-  if (map['retcode'] == 0 && map['message'] == 'OK') {
-    // TODO: THE CONST NUMBER IS NOT ROBUST.
+  Map<String, dynamic> remoteJSON = await getRemoteJSON(url, parameters);
+  // Get another response from the Internet and merge them together.
+  if (remoteJSON['retcode'] == 0 && remoteJSON['message'] == 'OK') {
     url = await UsefulKV.get(style.relIF.useful[0]) +
         await UsefulKV.get(style.relIF.useful[3]);
-    String gameID = map['data']['game_info_list'][2]['game']['id'];
+    String gameID = '';
+    for (Map<String, dynamic> iL in remoteJSON['data']['game_info_list']) {
+      if (iL['game']['biz'] == await UsefulKV.get(style.relIF.useful[4])) {
+        gameID = iL['game']['id'];
+      }
+    }
     parameters = <String>[
       'launcher_id=${await UsefulKV.get(style.relIF.useful[1])}',
       'game_id=$gameID',
       'language=${style.relIF.language}',
     ];
-    httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
-    httpPackageInfo = http.read(httpPackageUrl);
-    Map<String, dynamic> toAdd = json.decode(
-      utf8.decode(
-        (await httpPackageInfo).codeUnits,
-      ),
-    );
+    Map<String, dynamic> toAdd = await getRemoteJSON(url, parameters);
     if (toAdd['retcode'] == 0 && toAdd['message'] == 'OK') {
-      map['data'].addAll(toAdd['data']);
+      remoteJSON['data'].addAll(toAdd['data']);
     }
   }
-  return map;
+  return remoteJSON;
 }
 
 ImageProvider getRemoteBGI(Map<String, dynamic> content) {
   if (content['retcode'] == 0 && content['message'] == 'OK') {
     // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
-    print(content);
     return NetworkImage(content['data']['game_info_list'][2]['backgrounds'][0]
         ['background']['url']);
     // TODO: THE CONST NUMBER IS NOT ROBUST.

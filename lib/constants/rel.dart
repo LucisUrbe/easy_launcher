@@ -1,19 +1,21 @@
 class CnRel {
   static const List<String> useful = <String>[
-    'c109ae56e9d2c13f0f5f3245fb548c0d',
-    'ce30aa47577fe6d11d4a91d0e0133b9d',
-    '4aa177fd18a020cf7735a89025dc690a',
-    'a205701295300408e59f4d6ce66c2d8e',
+    '0103195654c1d28a0eae6490a495df13',
+    '79cbd9d37bc5e0a27cd70483c79a65e9',
+    'df0e9bb2c90b77058a307808944708e7',
+    '8b926ca329dfb31daa1211d0e158e05e',
+    '0192bc43f6f7e8c8b3bb716228f25ff1',
   ];
   static const String language = 'zh-cn';
 }
 
 class OsRel {
   static const List<String> useful = <String>[
-    '0b1d24cbf04c048f69de952cd44c1785',
-    'cdba69916039acac927e0f9c86c3eb9f',
-    '4aa177fd18a020cf7735a89025dc690a',
-    'a205701295300408e59f4d6ce66c2d8e',
+    'd8566659782fe319ef1ce16210765d59',
+    '395ccfcd6c8847d9684be5e0dbfeefb4',
+    'df0e9bb2c90b77058a307808944708e7',
+    '8b926ca329dfb31daa1211d0e158e05e',
+    '5853d87bc37fb515e55803dc6ac4f490',
   ];
   static String language = 'en-us';
 }
