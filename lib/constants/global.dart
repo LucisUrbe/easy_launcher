@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:easy_launcher/constants/rel.dart';
 
 const String sAppTitle = "easy_launcher";
@@ -85,3 +86,5 @@ const double dDialogSpaceH = 100.0;
 const double dDialogSpaceV = 150.0;
 
 const double dDialogChildPadding = 20.0;
+
+final dio = Dio();

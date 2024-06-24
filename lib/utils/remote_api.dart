@@ -1,71 +1,99 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:easy_launcher/constants/global.dart' as style;
+import 'package:easy_launcher/constants/global.dart' as global;
 import 'package:easy_launcher/constants/useful.b91.dart';
 import 'package:easy_launcher/constants/rel.dart';
 
-Future<Map<String, dynamic>> getRemoteJSON(
-  String url,
-  List<String> parameters,
+Future<Map<String, dynamic>> getRemoteMap(
+  String path,
+  Map<String, dynamic> queryParameters,
 ) async {
-  final Uri httpPackageUrl = Uri.parse('$url?${parameters.join('&')}');
-  final Future<String> httpPackageInfo = http.read(httpPackageUrl);
-  return json.decode(utf8.decode((await httpPackageInfo).codeUnits));
+  final Future<Response<dynamic>> response = global.dio.get(
+    path,
+    queryParameters: queryParameters,
+  );
+  return (await response).data;
+}
+
+/// This function is a process that judges the global interface
+/// according to the locale language code.
+Future<void> setGlobalRelIF(Locale locale) async {
+  if (locale.languageCode == "zh") {
+    global.relIF = CnRelInterface();
+    return; // Please add this return for special cases!
+  }
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  global.relIF.language = prefs.getString('languageCode') ?? 'en-us';
+}
+
+Map<String, dynamic> mergeMaps(List<Map<String, dynamic>> mapList) {
+  Map<String, dynamic> mergedMap = {
+    "retcode": 0,
+    "message": "OK",
+    "data": {},
+  };
+  for (Map<String, dynamic> m in mapList) {
+    if (m['retcode'] == 0 && m['message'] == 'OK') {
+      mergedMap['data'].addAll(m['data']); // Oh no it's dynamic!
+    }
+  }
+  return mergedMap;
 }
 
 Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
   // Set the interface according to the locale.
-  if (locale.languageCode == "zh") {
-    style.relIF = CnRelInterface();
-  } else {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    style.relIF.language = prefs.getString('languageCode') ?? 'en-us';
+  await setGlobalRelIF(locale);
+  List<Map<String, dynamic>> maps = <Map<String, dynamic>>[];
+  String base = UsefulKV.get(global.relIF.useful[13]);
+  Map<String, dynamic> queryParameters = {
+    'launcher_id': UsefulKV.get(global.relIF.useful[14]),
+  };
+  List range(int from, int to) => List.generate(to - from + 1, (i) => i + from);
+  List<Future<Map<String, dynamic>>> waitlist =
+      <Future<Map<String, dynamic>>>[];
+  for (int i in range(0, 4)) {
+    waitlist.add(getRemoteMap(
+      base + UsefulKV.get(global.relIF.useful[i]),
+      queryParameters,
+    ));
   }
-  // Assemble the URI and get the response from the Internet.
-  String url = UsefulKV.get(style.relIF.useful[0]) +
-      UsefulKV.get(style.relIF.useful[2]);
-  List<String> parameters = <String>[
-    'launcher_id=${UsefulKV.get(style.relIF.useful[1])}',
-    'language=${style.relIF.language}',
-  ];
-  Map<String, dynamic> remoteJSON = await getRemoteJSON(url, parameters);
-  if (remoteJSON['retcode'] == 0 && remoteJSON['message'] == 'OK') {
-    // Assemble the URI and get the response from the Internet.
-    url = UsefulKV.get(style.relIF.useful[0]) +
-        UsefulKV.get(style.relIF.useful[3]);
-    String gameID = '';
-    for (Map<String, dynamic> iL in remoteJSON['data']['game_info_list']) {
-      if (iL['game']['biz'] == UsefulKV.get(style.relIF.useful[4])) {
-        gameID = iL['game']['id'];
-      }
-    }
-    parameters = <String>[
-      'launcher_id=${UsefulKV.get(style.relIF.useful[1])}',
-      'game_id=$gameID',
-      'language=${style.relIF.language}',
-    ];
-    // Get another response from the Internet and merge them together.
-    Map<String, dynamic> toAdd = await getRemoteJSON(url, parameters);
-    if (toAdd['retcode'] == 0 && toAdd['message'] == 'OK') {
-      remoteJSON['data'].addAll(toAdd['data']);
+  queryParameters.addAll({
+    'language': global.relIF.language,
+  });
+  for (int i in range(5, 7)) {
+    waitlist.add(getRemoteMap(
+      base + UsefulKV.get(global.relIF.useful[i]),
+      queryParameters,
+    ));
+  }
+  for (Future<Map<String, dynamic>> m in waitlist) {
+    maps.add(await m);
+  }
+  for (Map<String, dynamic> m in maps[0]['data']['launch_configs']) {
+    if (m['game']['biz'] == UsefulKV.get(global.relIF.useful[11])) {
+      queryParameters.addAll({
+        'game_id': m['game']['id'],
+      });
+      maps.add(await getRemoteMap(
+        base + UsefulKV.get(global.relIF.useful[8]),
+        queryParameters,
+      ));
     }
   }
-  return remoteJSON;
+  return mergeMaps(maps);
 }
 
 ImageProvider getRemoteBGI(Map<String, dynamic> content) {
   if (content['retcode'] == 0 && content['message'] == 'OK') {
     // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
     for (Map<String, dynamic> iL in content['data']['game_info_list']) {
-      if (iL['game']['biz'] == UsefulKV.get(style.relIF.useful[4])) {
+      if (iL['game']['biz'] == UsefulKV.get(global.relIF.useful[11])) {
         return NetworkImage(iL['backgrounds'][0]['background']['url']);
       }
     }
   }
-  return const AssetImage(style.sAssetBGI);
+  return const AssetImage(global.sAssetBGI);
 }
 
 List<RelPost> getRemotePosts(Map<String, dynamic> content) {
