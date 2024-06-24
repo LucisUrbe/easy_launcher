@@ -7,7 +7,7 @@ class StrObf {
       "abcdefghijklmnopqrstuvwxyz{|}~";
 // all printable chars without $ \ "
 
-  static Future<String> encode(String input) async {
+  static String encode(String input) {
     List<int> source = utf8.encode(input);
     List<int> output = [];
     int b = 0;
@@ -45,7 +45,7 @@ class StrObf {
     return String.fromCharCodes(output);
   }
 
-  static Future<String> decode(String inputString) async {
+  static String decode(String inputString) {
     List<int> input = inputString.codeUnits;
     int v = -1;
     int b = 0;
