@@ -44,11 +44,13 @@ Map<String, dynamic> mergeMaps(List<Map<String, dynamic>> mapList) {
 Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
   // Set the interface according to the locale.
   await setGlobalRelIF(locale);
+  // Declare base information.
   List<Map<String, dynamic>> maps = <Map<String, dynamic>>[];
   String base = UsefulKV.get(global.relIF.useful[13]);
   Map<String, dynamic> queryParameters = {
     'launcher_id': UsefulKV.get(global.relIF.useful[14]),
   };
+  // Put async requests in the waitlist.
   List range(int from, int to) => List.generate(to - from + 1, (i) => i + from);
   List<Future<Map<String, dynamic>>> waitlist =
       <Future<Map<String, dynamic>>>[];
@@ -58,6 +60,7 @@ Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
       queryParameters,
     ));
   }
+  // Update necessary parameters and continue putting in the waitlist.
   queryParameters.addAll({
     'language': global.relIF.language,
   });
@@ -67,14 +70,17 @@ Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
       queryParameters,
     ));
   }
+  // Time's up! Get all the responses.
   for (Future<Map<String, dynamic>> m in waitlist) {
     maps.add(await m);
   }
+  // We need to get a parameter from the response.
   for (Map<String, dynamic> m in maps[0]['data']['launch_configs']) {
     if (m['game']['biz'] == UsefulKV.get(global.relIF.useful[11])) {
       queryParameters.addAll({
         'game_id': m['game']['id'],
       });
+      // The final request.
       maps.add(await getRemoteMap(
         base + UsefulKV.get(global.relIF.useful[8]),
         queryParameters,
@@ -85,8 +91,8 @@ Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
 }
 
 ImageProvider getRemoteBGI(Map<String, dynamic> content) {
-  if (content['retcode'] == 0 && content['message'] == 'OK') {
-    // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
+  // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
+  if (content['data'].containsKey('game_info_list')) {
     for (Map<String, dynamic> iL in content['data']['game_info_list']) {
       if (iL['game']['biz'] == UsefulKV.get(global.relIF.useful[11])) {
         return NetworkImage(iL['backgrounds'][0]['background']['url']);
@@ -98,7 +104,8 @@ ImageProvider getRemoteBGI(Map<String, dynamic> content) {
 
 List<RelPost> getRemotePosts(Map<String, dynamic> content) {
   List<RelPost> posts = [];
-  if (content['retcode'] == 0 && content['message'] == 'OK') {
+  if (content['data'].containsKey('content') &&
+      content['data']['content'].containsKey('posts')) {
     final List<dynamic> postsMap = content['data']['content']['posts'];
     for (final Map<String, dynamic> p in postsMap) {
       PostType t = PostType.info;
@@ -126,7 +133,8 @@ List<RelPost> getRemotePosts(Map<String, dynamic> content) {
 
 List<RelBanner> getRemoteBanners(Map<String, dynamic> content) {
   List<RelBanner> banners = [];
-  if (content['retcode'] == 0 && content['message'] == 'OK') {
+  if (content['data'].containsKey('content') &&
+      content['data']['content'].containsKey('banners')) {
     final List<dynamic> bannersMap = content['data']['content']['banners'];
     for (final Map<String, dynamic> b in bannersMap) {
       banners.add(

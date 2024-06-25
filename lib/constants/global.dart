@@ -3,7 +3,7 @@ import 'package:easy_launcher/constants/rel.dart';
 
 const String sAppTitle = "easy_launcher";
 
-const String sAssetBGI = "lib/assets/background.png";
+const String sAssetBGI = "assets/background.png";
 
 const double dDialogRadius = 30.0;
 

@@ -31,6 +31,7 @@ class MainApp extends StatelessWidget {
             theme: ThemeData(
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+              fontFamily: 'MiSans',
             ),
             home: MainPage(locale: locale),
             locale: locale,
