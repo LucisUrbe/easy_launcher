@@ -7,10 +7,8 @@ import 'package:easy_launcher/views/start.dart';
 import 'package:easy_launcher/utils/remote_api.dart';
 
 class MainPage extends StatefulWidget {
-  final Locale locale;
   const MainPage({
     super.key,
-    required this.locale,
   });
 
   @override
@@ -21,7 +19,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
-      future: getRemoteInfo(widget.locale),
+      future: getRemoteInfo(),
       builder:
           (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         switch (snapshot.connectionState) {

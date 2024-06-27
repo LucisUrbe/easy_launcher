@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_launcher/constants/global.dart' as global;
 import 'package:easy_launcher/constants/useful.b91.dart';
 import 'package:easy_launcher/constants/rel.dart';
@@ -16,34 +15,17 @@ Future<Map<String, dynamic>> getRemoteMap(
   return (await response).data;
 }
 
-/// This function is a process that judges the global interface
-/// according to the locale language code.
-Future<void> setGlobalRelIF(Locale locale) async {
-  if (locale.languageCode == "zh") {
-    global.relIF = CnRelInterface();
-    return; // Please add this return for special cases!
-  }
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  global.relIF.language = prefs.getString('languageCode') ?? 'en-us';
-}
-
 Map<String, dynamic> mergeMaps(List<Map<String, dynamic>> mapList) {
-  Map<String, dynamic> mergedMap = {
-    "retcode": 0,
-    "message": "OK",
-    "data": {},
-  };
+  Map<String, dynamic> mergedData = {};
   for (Map<String, dynamic> m in mapList) {
     if (m['retcode'] == 0 && m['message'] == 'OK') {
-      mergedMap['data'].addAll(m['data']); // Oh no it's dynamic!
+      mergedData.addAll(m['data']);
     }
   }
-  return mergedMap;
+  return mergedData;
 }
 
-Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
-  // Set the interface according to the locale.
-  await setGlobalRelIF(locale);
+Future<Map<String, dynamic>> getRemoteInfo() async {
   // Declare base information.
   List<Map<String, dynamic>> maps = <Map<String, dynamic>>[];
   String base = UsefulKV.get(global.relIF.useful[13]);
@@ -90,10 +72,10 @@ Future<Map<String, dynamic>> getRemoteInfo(Locale locale) async {
   return mergeMaps(maps);
 }
 
-ImageProvider getRemoteBGI(Map<String, dynamic> content) {
+ImageProvider getRemoteBGI(Map<String, dynamic> mergedData) {
   // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
-  if (content['data'].containsKey('game_info_list')) {
-    for (Map<String, dynamic> iL in content['data']['game_info_list']) {
+  if (mergedData.containsKey('game_info_list')) {
+    for (Map<String, dynamic> iL in mergedData['game_info_list']) {
       if (iL['game']['biz'] == UsefulKV.get(global.relIF.useful[11])) {
         return NetworkImage(iL['backgrounds'][0]['background']['url']);
       }
@@ -102,11 +84,11 @@ ImageProvider getRemoteBGI(Map<String, dynamic> content) {
   return const AssetImage(global.sAssetBGI);
 }
 
-List<RelPost> getRemotePosts(Map<String, dynamic> content) {
+List<RelPost> getRemotePosts(Map<String, dynamic> mergedData) {
   List<RelPost> posts = [];
-  if (content['data'].containsKey('content') &&
-      content['data']['content'].containsKey('posts')) {
-    final List<dynamic> postsMap = content['data']['content']['posts'];
+  if (mergedData.containsKey('content') &&
+      mergedData['content'].containsKey('posts')) { // Oh no it's dynamic!
+    final List<dynamic> postsMap = mergedData['content']['posts'];
     for (final Map<String, dynamic> p in postsMap) {
       PostType t = PostType.info;
       String s = p['type']!;
@@ -131,11 +113,11 @@ List<RelPost> getRemotePosts(Map<String, dynamic> content) {
   return posts;
 }
 
-List<RelBanner> getRemoteBanners(Map<String, dynamic> content) {
+List<RelBanner> getRemoteBanners(Map<String, dynamic> mergedData) {
   List<RelBanner> banners = [];
-  if (content['data'].containsKey('content') &&
-      content['data']['content'].containsKey('banners')) {
-    final List<dynamic> bannersMap = content['data']['content']['banners'];
+  if (mergedData.containsKey('content') &&
+      mergedData['content'].containsKey('banners')) { // Oh no it's dynamic!
+    final List<dynamic> bannersMap = mergedData['content']['banners'];
     for (final Map<String, dynamic> b in bannersMap) {
       banners.add(
         RelBanner(
