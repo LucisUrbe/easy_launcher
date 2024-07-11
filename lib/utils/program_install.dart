@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:easy_launcher/constants/global.dart' as global;
 
 Future<int> platformDiskFreeBytes(String programPath) async {
   if (Platform.isMacOS) {
     Process process = await Process.start('df', ['-k', programPath]);
     final List<String> dfStdOut =
-    await process.stdout.transform(utf8.decoder).toList();
+        await process.stdout.transform(utf8.decoder).toList();
     RegExp regExp = RegExp(r'^\S+\s+\d+\s+\d+\s+(\d+)');
     Match? match = regExp.firstMatch(dfStdOut[0].split('\n')[1]);
     if (match != null && match.groupCount >= 1) {
@@ -39,12 +41,12 @@ Future<void> programInstall(
 ) async {
   // Collect basic information about the packages.
   List<ZipPackage> zipPackages = [];
-  String programVersion = '';
+  // String programVersion = '';
   if (mergedData.containsKey('game_packages')) {
     List<Map<String, dynamic>> gamePackages = mergedData['game_packages'];
     for (Map<String, dynamic> gP in gamePackages) {
       if (gP['game']['biz'] == biz) {
-        programVersion = gP['main']['major']['version'];
+        // programVersion = gP['main']['major']['version'];
         for (Map<String, dynamic> major in gP['main']['major']['game_pkgs']) {
           zipPackages.add(ZipPackage(
             url: major['url'],
@@ -82,6 +84,26 @@ Future<void> programInstall(
     );
   }
   // Calculate and check the MD5 hashes of the downloaded packages.
+  for (ZipPackage zP in zipPackages) {
+    File package = File(programPath + zP.url.split('/').last);
+    if (!package.existsSync()) {
+      throw PathNotFoundException(
+        programPath,
+        const OSError(
+          "The program cannot handle the situation "
+          "where the file is missing just after a download task.",
+        ),
+      );
+    }
+    Digest packageMD5Digest = await md5.bind(package.openRead()).first;
+    String packageMD5Digested = packageMD5Digest.toString();
+    if (zP.md5.toLowerCase() != packageMD5Digested.toLowerCase()) {
+      throw FormatException(
+          "The file is broken because MD5 hashes don't match. "
+          "The calculated one is ${packageMD5Digested.toLowerCase()} "
+          "but the expected one is ${zP.md5.toLowerCase()}.");
+    }
+  }
   // Decompress the zip packages.
   // Set the installation state and remove zip packages.
   // Write a config file.
