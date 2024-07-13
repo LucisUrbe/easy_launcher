@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:archive/archive_io.dart';
 import 'package:crypto/crypto.dart';
 import 'package:easy_launcher/constants/global.dart' as global;
 
@@ -9,8 +10,8 @@ Future<int> platformDiskFreeBytes(String programPath) async {
     Process process = await Process.start('df', ['-k', programPath]);
     final List<String> dfStdOut =
         await process.stdout.transform(utf8.decoder).toList();
-    RegExp regExp = RegExp(r'^\S+\s+\d+\s+\d+\s+(\d+)');
-    Match? match = regExp.firstMatch(dfStdOut[0].split('\n')[1]);
+    final RegExp regExp = RegExp(r'^\S+\s+\d+\s+\d+\s+(\d+)');
+    final Match? match = regExp.firstMatch(dfStdOut[0].split('\n')[1]);
     if (match != null && match.groupCount >= 1) {
       return int.parse(match.group(1)!) * 1024;
     } else {
@@ -43,7 +44,7 @@ Future<void> programInstall(
   List<ZipPackage> zipPackages = [];
   // String programVersion = '';
   if (mergedData.containsKey('game_packages')) {
-    List<Map<String, dynamic>> gamePackages = mergedData['game_packages'];
+    final List<Map<String, dynamic>> gamePackages = mergedData['game_packages'];
     for (Map<String, dynamic> gP in gamePackages) {
       if (gP['game']['biz'] == biz) {
         // programVersion = gP['main']['major']['version'];
@@ -61,10 +62,10 @@ Future<void> programInstall(
   }
   // Check if the device has enough space for the installation.
   int packagesBytes = 0;
-  for (ZipPackage zP in zipPackages) {
+  for (final ZipPackage zP in zipPackages) {
     packagesBytes += zP.size;
   }
-  int freeBytes = await platformDiskFreeBytes(programPath);
+  final int freeBytes = await platformDiskFreeBytes(programPath);
   if (packagesBytes > freeBytes) {
     throw const FileSystemException('Disk space not enough for download!');
   }
@@ -73,7 +74,7 @@ Future<void> programInstall(
     throw const FileSystemException('Disk space not enough for install!');
   }
   // Use Dio to download zip packages. (Aria2 may be better?)
-  for (ZipPackage zP in zipPackages) {
+  for (final ZipPackage zP in zipPackages) {
     await global.dio.download(
       zP.url,
       programPath + zP.url.split('/').last,
@@ -84,8 +85,8 @@ Future<void> programInstall(
     );
   }
   // Calculate and check the MD5 hashes of the downloaded packages.
-  for (ZipPackage zP in zipPackages) {
-    File package = File(programPath + zP.url.split('/').last);
+  for (final ZipPackage zP in zipPackages) {
+    final File package = File(programPath + zP.url.split('/').last);
     if (!package.existsSync()) {
       throw PathNotFoundException(
         programPath,
@@ -95,8 +96,8 @@ Future<void> programInstall(
         ),
       );
     }
-    Digest packageMD5Digest = await md5.bind(package.openRead()).first;
-    String packageMD5Digested = packageMD5Digest.toString();
+    final Digest packageMD5Digest = await md5.bind(package.openRead()).first;
+    final String packageMD5Digested = packageMD5Digest.toString();
     if (zP.md5.toLowerCase() != packageMD5Digested.toLowerCase()) {
       throw FormatException(
           "The file is broken because MD5 hashes don't match. "
@@ -105,6 +106,9 @@ Future<void> programInstall(
     }
   }
   // Decompress the zip packages.
+  for (final ZipPackage zP in zipPackages) {
+    await extractFileToDisk(programPath + zP.url.split('/').last, 'out');
+  }
   // Set the installation state and remove zip packages.
   // Write a config file.
 }

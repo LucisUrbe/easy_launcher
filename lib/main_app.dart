@@ -48,7 +48,7 @@ class MainApp extends StatelessWidget {
             theme: ThemeData(
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-              fontFamily: 'MiSans',
+              fontFamily: 'MiSans', // TODO: add an exclamation about this font
             ),
             home: const MainPage(),
             locale: locale,
