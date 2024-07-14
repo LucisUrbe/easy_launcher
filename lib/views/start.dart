@@ -25,6 +25,9 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   int _postIndex = 0;
   bool isHovering = false;
+  int _selectedIndex = 0;
+  bool showLeading = false;
+  bool showTrailing = false;
   final CarouselController _controller = CarouselController();
   // The states make this part of widget unable to be simplified as a function
   // because Dart does not support referring or setting states by just passing
@@ -422,9 +425,91 @@ class _StartPageState extends State<StartPage> {
         ),
       ]);
     }
-    return Stack(
-      alignment: AlignmentDirectional.center,
-      children: stacks,
+    return Row(
+      children: [
+        NavigationRail(
+          backgroundColor: Colors.grey.shade900,
+          selectedIndex: _selectedIndex,
+          groupAlignment: 1.0,
+          onDestinationSelected: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          labelType: NavigationRailLabelType.all,
+          leading: showLeading
+              ? FloatingActionButton(
+                  elevation: 0,
+                  onPressed: () {
+                    // Add your onPressed code here!
+                  },
+                  child: const Icon(Icons.add),
+                )
+              : const SizedBox(),
+          trailing: showTrailing
+              ? IconButton(
+                  onPressed: () {
+                    // Add your onPressed code here!
+                  },
+                  icon: const Icon(Icons.more_horiz_rounded),
+                )
+              : const SizedBox(),
+          destinations: <NavigationRailDestination>[
+            NavigationRailDestination(
+              icon: const Icon(
+                Icons.favorite_border,
+                color: Colors.white,
+              ),
+              selectedIcon: const Icon(Icons.favorite),
+              label: Text(
+                S.of(context).launchGame,
+                style: const TextStyle(
+                  inherit: false,
+                  color: Colors.white,
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
+            ),
+            NavigationRailDestination(
+              icon: const Icon(
+                Icons.bookmark_border,
+                color: Colors.white,
+              ),
+              selectedIcon: const Icon(Icons.book),
+              label: Text(
+                S.of(context).launchGame,
+                style: const TextStyle(
+                  inherit: false,
+                  color: Colors.white,
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
+            ),
+            NavigationRailDestination(
+              icon: const Icon(
+                Icons.star_border,
+                color: Colors.white,
+              ),
+              selectedIcon: const Icon(Icons.star),
+              label: Text(
+                S.of(context).launchGame,
+                style: const TextStyle(
+                  inherit: false,
+                  color: Colors.white,
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const VerticalDivider(thickness: 1, width: 1),
+        Expanded(
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: stacks,
+          ),
+        ),
+      ],
     );
   }
 }
