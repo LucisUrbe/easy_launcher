@@ -67,6 +67,7 @@ Future<Map<String, dynamic>> getRemoteInfo() async {
         base + UsefulKV.get(global.relIF.useful[8]),
         queryParameters,
       ));
+      break;
     }
   }
   return mergeMaps(maps);
