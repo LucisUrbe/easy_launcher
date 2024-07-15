@@ -58,26 +58,33 @@ Future<Map<String, dynamic>> getRemoteInfo() async {
   }
   // We need to get a parameter from the response.
   for (Map<String, dynamic> m in maps[0]['data']['launch_configs']) {
-    if (m['game']['biz'] == UsefulKV.get(global.relIF.useful[11])) {
-      queryParameters.addAll({
-        'game_id': m['game']['id'],
+    queryParameters.addAll({
+      'game_id': m['game']['id'],
+    });
+    // Another request.
+    Map<String, dynamic> content = await getRemoteMap(
+      base + UsefulKV.get(global.relIF.useful[8]),
+      queryParameters,
+    );
+    if (content['retcode'] == 0 && content['message'] == 'OK') {
+      content['data'].addAll({
+        'contents_${content['data']['content']['game']['biz']}': content['data']
+            ['content'],
       });
-      // The final request.
-      maps.add(await getRemoteMap(
-        base + UsefulKV.get(global.relIF.useful[8]),
-        queryParameters,
-      ));
-      break;
+      content['data'].remove('content');
+      maps.add(content);
     }
   }
+
   return mergeMaps(maps);
 }
 
-ImageProvider getRemoteBGI(Map<String, dynamic> mergedData) {
+ImageProvider getRemoteBGI(Map<String, dynamic> mergedData, int indexOffset) {
   // https://github.com/flutter/flutter/issues/73081#issuecomment-752050114
   if (mergedData.containsKey('game_info_list')) {
     for (Map<String, dynamic> iL in mergedData['game_info_list']) {
-      if (iL['game']['biz'] == UsefulKV.get(global.relIF.useful[11])) {
+      if (iL['game']['biz'] ==
+          UsefulKV.get(global.relIF.useful[9 + indexOffset])) {
         return NetworkImage(iL['backgrounds'][0]['background']['url']);
       }
     }
@@ -85,49 +92,68 @@ ImageProvider getRemoteBGI(Map<String, dynamic> mergedData) {
   return const AssetImage(global.sAssetBGI);
 }
 
-List<RelPost> getRemotePosts(Map<String, dynamic> mergedData) {
-  List<RelPost> posts = [];
-  if (mergedData.containsKey('content') &&
-      mergedData['content'].containsKey('posts')) { // Oh no it's dynamic!
-    final List<dynamic> postsMap = mergedData['content']['posts'];
-    for (final Map<String, dynamic> p in postsMap) {
-      PostType t = PostType.info;
-      String s = p['type']!;
-      if (s == 'POST_TYPE_ANNOUNCE') {
-        t = PostType.announce;
-      } else if (s == 'POST_TYPE_INFO') {
-        t = PostType.info;
-      } else if (s == 'POST_TYPE_ACTIVITY') {
-        t = PostType.activity;
+List<List<RelPost>> getRemotePosts(Map<String, dynamic> mergedData) {
+  List<List<RelPost>> postsList = <List<RelPost>>[];
+  const String keyBase = 'contents_';
+  for (int indexOffset = 0; indexOffset < 4; indexOffset++) {
+    // Why 4? It should be the same as the length of NavigationRailDestination list.
+    String key = keyBase + UsefulKV.get(global.relIF.useful[9 + indexOffset]);
+    if (mergedData.containsKey(key)) {
+      List<RelPost> posts = <RelPost>[];
+      if (mergedData[key].containsKey('posts')) {
+        // Oh no it's dynamic!
+        final List<dynamic> postsMap = mergedData[key]['posts'];
+        for (final Map<String, dynamic> p in postsMap) {
+          PostType t = PostType.info;
+          String s = p['type']!;
+          if (s == 'POST_TYPE_ANNOUNCE') {
+            t = PostType.announce;
+          } else if (s == 'POST_TYPE_INFO') {
+            t = PostType.info;
+          } else if (s == 'POST_TYPE_ACTIVITY') {
+            t = PostType.activity;
+          }
+          posts.add(
+            RelPost(
+              id: p['id'],
+              type: t,
+              title: p['title']!,
+              link: p['link']!,
+              date: p['date']!,
+            ),
+          );
+        }
       }
-      posts.add(
-        RelPost(
-          id: p['id'],
-          type: t,
-          title: p['title']!,
-          link: p['link']!,
-          date: p['date']!,
-        ),
-      );
+      postsList.add(posts);
     }
   }
-  return posts;
+  return postsList;
 }
 
-List<RelBanner> getRemoteBanners(Map<String, dynamic> mergedData) {
-  List<RelBanner> banners = [];
-  if (mergedData.containsKey('content') &&
-      mergedData['content'].containsKey('banners')) { // Oh no it's dynamic!
-    final List<dynamic> bannersMap = mergedData['content']['banners'];
-    for (final Map<String, dynamic> b in bannersMap) {
-      banners.add(
-        RelBanner(
-          id: b['id']!,
-          imageURL: b['image']['url']!,
-          onClickURL: b['image']['link']!,
-        ),
-      );
+List<List<RelBanner>> getRemoteBanners(Map<String, dynamic> mergedData) {
+  List<List<RelBanner>> bannersList = <List<RelBanner>>[];
+  const String keyBase = 'contents_';
+
+  for (int indexOffset = 0; indexOffset < 4; indexOffset++) {
+    // Why 4? It should be the same as the length of NavigationRailDestination list.
+    String key = keyBase + UsefulKV.get(global.relIF.useful[9 + indexOffset]);
+    if (mergedData.containsKey(key)) {
+      List<RelBanner> banners = <RelBanner>[];
+      if (mergedData[key].containsKey('banners')) {
+        // Oh no it's dynamic!
+        final List<dynamic> bannersMap = mergedData[key]['banners'];
+        for (final Map<String, dynamic> b in bannersMap) {
+          banners.add(
+            RelBanner(
+              id: b['id']!,
+              imageURL: b['image']['url']!,
+              onClickURL: b['image']['link']!,
+            ),
+          );
+        }
+      }
+      bannersList.add(banners);
     }
   }
-  return banners;
+  return bannersList;
 }

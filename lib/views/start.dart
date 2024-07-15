@@ -23,9 +23,9 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  int _postIndex = 0;
-  bool isHovering = false;
-  int _selectedIndex = 0;
+  int _selectedBiz = 0;
+  int _selectedPost = 0;
+  bool _isHovering = false;
   bool showLeading = false;
   bool showTrailing = false;
   final CarouselController _controller = CarouselController();
@@ -114,11 +114,11 @@ class _StartPageState extends State<StartPage> {
     if (widget.content.isNotEmpty) {
       bg = DecorationImage(
         fit: BoxFit.cover,
-        image: getRemoteBGI(widget.content),
+        image: getRemoteBGI(widget.content, _selectedBiz),
       );
-      List<RelPost> posts = getRemotePosts(widget.content);
+      List<RelPost> posts = getRemotePosts(widget.content)[_selectedBiz];
       selectedPost = buildPosts(posts);
-      banners = getRemoteBanners(widget.content);
+      banners = getRemoteBanners(widget.content)[_selectedBiz];
       stacks.addAll([
         Container(
           decoration: BoxDecoration(
@@ -231,7 +231,7 @@ class _StartPageState extends State<StartPage> {
                               TextButton(
                                 onPressed: () {
                                   setState(() {
-                                    _postIndex = 0;
+                                    _selectedPost = 0;
                                   });
                                 },
                                 child: Text(
@@ -245,7 +245,7 @@ class _StartPageState extends State<StartPage> {
                               TextButton(
                                 onPressed: () {
                                   setState(() {
-                                    _postIndex = 1;
+                                    _selectedPost = 1;
                                   });
                                 },
                                 child: Text(
@@ -259,7 +259,7 @@ class _StartPageState extends State<StartPage> {
                               TextButton(
                                 onPressed: () {
                                   setState(() {
-                                    _postIndex = 2;
+                                    _selectedPost = 2;
                                   });
                                 },
                                 child: Text(
@@ -278,7 +278,7 @@ class _StartPageState extends State<StartPage> {
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: selectedPost[_postIndex],
+                            children: selectedPost[_selectedPost],
                           ),
                         ],
                       ),
@@ -326,7 +326,7 @@ class _StartPageState extends State<StartPage> {
                               }
                             },
                             onHover: (bool hovering) {
-                              setState(() => isHovering = hovering);
+                              setState(() => _isHovering = hovering);
                             },
                             child: Stack(
                               children: <Widget>[
@@ -342,7 +342,7 @@ class _StartPageState extends State<StartPage> {
                                     height: global.dCarouselImageH,
                                   ),
                                 ),
-                                isHovering
+                                _isHovering
                                     ? Positioned(
                                         right: global.dZero,
                                         top: global.dCarouselArrowTop,
@@ -358,7 +358,7 @@ class _StartPageState extends State<StartPage> {
                                         ),
                                       )
                                     : Container(),
-                                isHovering
+                                _isHovering
                                     ? Positioned(
                                         left: global.dZero,
                                         top: global.dCarouselArrowTop,
@@ -429,11 +429,11 @@ class _StartPageState extends State<StartPage> {
       children: [
         NavigationRail(
           backgroundColor: Colors.grey.shade900,
-          selectedIndex: _selectedIndex,
+          selectedIndex: _selectedBiz,
           groupAlignment: 1.0,
           onDestinationSelected: (int index) {
             setState(() {
-              _selectedIndex = index;
+              _selectedBiz = index;
             });
           },
           labelType: NavigationRailLabelType.all,
@@ -491,6 +491,21 @@ class _StartPageState extends State<StartPage> {
                 color: Colors.white,
               ),
               selectedIcon: const Icon(Icons.star),
+              label: Text(
+                S.of(context).launchGame,
+                style: const TextStyle(
+                  inherit: false,
+                  color: Colors.white,
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
+            ),
+            NavigationRailDestination(
+              icon: const Icon(
+                Icons.app_settings_alt,
+                color: Colors.white,
+              ),
+              selectedIcon: const Icon(Icons.settings),
               label: Text(
                 S.of(context).launchGame,
                 style: const TextStyle(
