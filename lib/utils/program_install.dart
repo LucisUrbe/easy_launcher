@@ -18,6 +18,29 @@ Future<int> platformDiskFreeBytes(String programPath) async {
       throw const FormatException('Could not parse output from df!');
     }
   }
+  if (Platform.isWindows) {
+    Process process = await Process.start(
+      'PowerShell',
+      [
+        '-Command',
+        '(Get-PSDrive',
+        '-PSProvider',
+        'FileSystem',
+        '|',
+        'Where-Object',
+        '{',
+        '\$_.Root',
+        '-eq',
+        '(Get-Item',
+        '-Path',
+        "'$programPath').PSDrive.Root",
+        '}).Free',
+      ],
+    );
+    final List<String> dfStdOut =
+        await process.stdout.transform(utf8.decoder).toList();
+    return int.parse(dfStdOut[0]);
+  }
   return -1;
 }
 
