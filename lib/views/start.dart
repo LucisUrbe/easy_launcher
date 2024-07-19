@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,6 +8,7 @@ import 'package:easy_launcher/constants/global.dart' as global;
 import 'package:easy_launcher/constants/rel.dart';
 import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/utils/remote_api.dart';
+import 'package:easy_launcher/views/start_posts.dart';
 import 'package:easy_launcher/views/settings.dart';
 
 class StartPage extends StatefulWidget {
@@ -51,57 +51,6 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
       return null;
     }),
   );
-
-  List<List<Widget>> buildPosts(List<RelPost> posts) {
-    List<Tooltip> tipAnnounce = <Tooltip>[];
-    List<Tooltip> tipInfo = <Tooltip>[];
-    List<Tooltip> tipActivity = <Tooltip>[];
-    for (final p in posts) {
-      Tooltip t = Tooltip(
-        waitDuration: const Duration(milliseconds: global.iWaitMS),
-        message: p.title,
-        child: RichText(
-          overflow: TextOverflow.ellipsis,
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: "   ${p.date}   ", // it is a TEMPORARY way to align
-                style: const TextStyle(
-                  color: Colors.white54,
-                ),
-              ),
-              TextSpan(
-                text: p.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () async {
-                    if (!await launchUrl(Uri.parse(p.link))) {
-                      throw Exception('Could not launch ${p.link}');
-                    }
-                  },
-              ),
-            ],
-          ),
-        ),
-      );
-      if (p.type == PostType.announce &&
-          tipAnnounce.length < global.iMaxPosts) {
-        tipAnnounce.add(t);
-      } else if (p.type == PostType.info && tipInfo.length < global.iMaxPosts) {
-        tipInfo.add(t);
-      } else if (p.type == PostType.activity &&
-          tipActivity.length < global.iMaxPosts) {
-        tipActivity.add(t);
-      }
-    }
-    return [
-      tipAnnounce,
-      tipInfo,
-      tipActivity,
-    ];
-  }
 
   @override
   void initState() {
@@ -483,17 +432,13 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
           leading: showLeading
               ? FloatingActionButton(
                   elevation: 0,
-                  onPressed: () {
-                    // Add your onPressed code here!
-                  },
+                  onPressed: () {},
                   child: const Icon(Icons.add),
                 )
               : const SizedBox(),
           trailing: showTrailing
               ? IconButton(
-                  onPressed: () {
-                    // Add your onPressed code here!
-                  },
+                  onPressed: () {},
                   icon: const Icon(Icons.more_horiz_rounded),
                 )
               : const SizedBox(),
