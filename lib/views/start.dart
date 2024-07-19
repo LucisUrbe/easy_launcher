@@ -22,13 +22,15 @@ class StartPage extends StatefulWidget {
   State<StartPage> createState() => _StartPageState();
 }
 
-class _StartPageState extends State<StartPage> {
+class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
   int _selectedBiz = 0;
   int _selectedPost = 0;
   bool _isHovering = false;
   bool showLeading = false;
   bool showTrailing = false;
-  final CarouselController _controller = CarouselController();
+  late final AnimationController _indicatorController;
+  bool repeating = true;
+  final CarouselController _carouselController = CarouselController();
   // The states make this part of widget unable to be simplified as a function
   // because Dart does not support referring or setting states by just passing
   // function parameters.
@@ -102,6 +104,26 @@ class _StartPageState extends State<StartPage> {
   }
 
   @override
+  void initState() {
+    /// [AnimationController]s can be created with `vsync: this` because of
+    /// [TickerProviderStateMixin].
+    _indicatorController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..addListener(() {
+        setState(() {});
+      });
+    _indicatorController.repeat();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _indicatorController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     DecorationImage bg = const DecorationImage(
       fit: BoxFit.cover,
@@ -145,7 +167,16 @@ class _StartPageState extends State<StartPage> {
                   ),
                   child: Center(
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          if (repeating) {
+                            _indicatorController.stop();
+                          } else {
+                            _indicatorController.repeat();
+                          }
+                          repeating = !repeating;
+                        });
+                      },
                       child: Text(
                         S.of(context).launchGame,
                         style: const TextStyle(
@@ -302,7 +333,7 @@ class _StartPageState extends State<StartPage> {
                 width: global.dBannerW,
                 height: global.dBannerH,
                 child: CarouselSlider(
-                  carouselController: _controller,
+                  carouselController: _carouselController,
                   options: CarouselOptions(
                     height: global.dCarouselImageH,
                     aspectRatio:
@@ -348,7 +379,7 @@ class _StartPageState extends State<StartPage> {
                                         top: global.dCarouselArrowTop,
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            _controller.nextPage();
+                                            _carouselController.nextPage();
                                           },
                                           style: bs,
                                           child: const Icon(
@@ -364,7 +395,7 @@ class _StartPageState extends State<StartPage> {
                                         top: global.dCarouselArrowTop,
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            _controller.previousPage();
+                                            _carouselController.previousPage();
                                           },
                                           style: bs,
                                           child: const Icon(
@@ -385,6 +416,18 @@ class _StartPageState extends State<StartPage> {
             }
             return Container();
           },
+        ),
+        Positioned(
+          right: global.dButtonRight,
+          bottom: global.dButtonBottom * 1.75,
+          child: SizedBox(
+            width: global.dButtonW,
+            height: 8,
+            child: LinearProgressIndicator(
+              value: _indicatorController.value,
+              semanticsLabel: 'Linear progress indicator',
+            ),
+          ),
         ),
       ]);
     } else {
