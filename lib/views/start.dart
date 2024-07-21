@@ -8,6 +8,7 @@ import 'package:easy_launcher/constants/global.dart' as global;
 import 'package:easy_launcher/constants/rel.dart';
 import 'package:easy_launcher/generated/l10n.dart';
 import 'package:easy_launcher/utils/remote_api.dart';
+import 'package:easy_launcher/views/start_destinations.dart';
 import 'package:easy_launcher/views/start_posts.dart';
 import 'package:easy_launcher/views/settings.dart';
 
@@ -419,92 +420,30 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
     }
     return Row(
       children: [
-        NavigationRail(
-          backgroundColor: Colors.grey.shade900,
-          selectedIndex: _selectedBiz,
-          groupAlignment: 1.0,
-          onDestinationSelected: (int index) {
-            setState(() {
-              _selectedBiz = index;
-            });
-          },
-          labelType: NavigationRailLabelType.all,
-          leading: showLeading
-              ? FloatingActionButton(
-                  elevation: 0,
-                  onPressed: () {},
-                  child: const Icon(Icons.add),
-                )
-              : const SizedBox(),
-          trailing: showTrailing
-              ? IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.more_horiz_rounded),
-                )
-              : const SizedBox(),
-          destinations: <NavigationRailDestination>[
-            NavigationRailDestination(
-              icon: const Icon(
-                Icons.favorite_border,
-                color: Colors.white,
-              ),
-              selectedIcon: const Icon(Icons.favorite),
-              label: Text(
-                S.of(context).launchGame,
-                style: const TextStyle(
-                  inherit: false,
-                  color: Colors.white,
-                  backgroundColor: Colors.transparent,
-                ),
-              ),
-            ),
-            NavigationRailDestination(
-              icon: const Icon(
-                Icons.bookmark_border,
-                color: Colors.white,
-              ),
-              selectedIcon: const Icon(Icons.book),
-              label: Text(
-                S.of(context).launchGame,
-                style: const TextStyle(
-                  inherit: false,
-                  color: Colors.white,
-                  backgroundColor: Colors.transparent,
-                ),
-              ),
-            ),
-            NavigationRailDestination(
-              icon: const Icon(
-                Icons.star_border,
-                color: Colors.white,
-              ),
-              selectedIcon: const Icon(Icons.star),
-              label: Text(
-                S.of(context).launchGame,
-                style: const TextStyle(
-                  inherit: false,
-                  color: Colors.white,
-                  backgroundColor: Colors.transparent,
-                ),
-              ),
-            ),
-            NavigationRailDestination(
-              icon: const Icon(
-                Icons.app_settings_alt,
-                color: Colors.white,
-              ),
-              selectedIcon: const Icon(Icons.settings),
-              label: Text(
-                S.of(context).launchGame,
-                style: const TextStyle(
-                  inherit: false,
-                  color: Colors.white,
-                  backgroundColor: Colors.transparent,
-                ),
-              ),
-            ),
-          ],
-        ),
+        widget.content.isNotEmpty
+            ? NavigationRail(
+                selectedIndex: _selectedBiz,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    _selectedBiz = index;
+                  });
+                },
+                leading: showLeading
+                    ? FloatingActionButton(
+                        elevation: 0,
+                        onPressed: () {},
+                        child: const Icon(Icons.add),
+                      )
+                    : const SizedBox(),
+                trailing: showTrailing
+                    ? IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.more_horiz_rounded),
+                      )
+                    : const SizedBox(),
+                destinations: buildNRDs(widget.content),
+              )
+            : Container(),
         const VerticalDivider(thickness: 1, width: 1),
         Expanded(
           child: Stack(

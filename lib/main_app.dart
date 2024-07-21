@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,6 +49,27 @@ class MainApp extends StatelessWidget {
             theme: ThemeData(
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+              navigationRailTheme: NavigationRailThemeData(
+                backgroundColor: Colors.grey.shade900,
+                groupAlignment: 1.0, // bottom
+                labelType: NavigationRailLabelType.all,
+                unselectedLabelTextStyle: const TextStyle(
+                  color: Colors.grey,
+                  backgroundColor: Colors.transparent,
+                ),
+                selectedLabelTextStyle: const TextStyle(
+                  color: Colors.white,
+                  backgroundColor: Colors.transparent,
+                ),
+                useIndicator: true,
+                indicatorColor: Colors.grey[850],
+                indicatorShape: const RoundedRectangleBorder(
+                  side: BorderSide(),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+              ),
               fontFamily: 'MiSans', // TODO: add an exclamation about this font
             ),
             home: const MainPage(),
