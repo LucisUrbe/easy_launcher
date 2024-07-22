@@ -30,7 +30,7 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
   bool showLeading = false;
   bool showTrailing = false;
   late final AnimationController _indicatorController;
-  bool repeating = true;
+  bool repeating = false;
   final CarouselController _carouselController = CarouselController();
   // The states make this part of widget unable to be simplified as a function
   // because Dart does not support referring or setting states by just passing
@@ -63,7 +63,7 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
     )..addListener(() {
         setState(() {});
       });
-    _indicatorController.repeat();
+    // _indicatorController.repeat();
     super.initState();
   }
 

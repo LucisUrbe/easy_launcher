@@ -14,5 +14,6 @@
   "showPostsSubtitle": "The posts are a series of hyperlinks for activities, etc.",
   "languageCodeTitle": "Custom language code",
   "languageCodeSubtitle": "The entries are from officially supported languages.",
+  "fontExclamation": "This app uses MiSans as the default font.",
   "@@locale": "en"
 }

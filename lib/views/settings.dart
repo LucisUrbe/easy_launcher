@@ -163,6 +163,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         ],
                       )
                     : Container(),
+                const Divider(height: global.dDialogDivH),
+                Text(
+                  S.of(context).fontExclamation
+                ),
+                const Divider(height: global.dDialogDivH),
               ],
             );
         }

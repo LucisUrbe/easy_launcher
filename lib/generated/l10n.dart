@@ -199,6 +199,16 @@ class S {
       args: [],
     );
   }
+
+  /// `This app uses MiSans as the default font.`
+  String get fontExclamation {
+    return Intl.message(
+      'This app uses MiSans as the default font.',
+      name: 'fontExclamation',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activity": MessageLookupByLibrary.simpleMessage("Events"),
         "announce": MessageLookupByLibrary.simpleMessage("Notices"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
+        "fontExclamation": MessageLookupByLibrary.simpleMessage(
+            "This app uses MiSans as the default font."),
         "info": MessageLookupByLibrary.simpleMessage("Info"),
         "languageCodeSubtitle": MessageLookupByLibrary.simpleMessage(
             "The entries are from officially supported languages."),

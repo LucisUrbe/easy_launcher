@@ -14,5 +14,6 @@
   "showPostsSubtitle": "公告是用于宣传的一组超链接。",
   "languageCodeTitle": "自定义语言码",
   "languageCodeSubtitle": "选项来源于官方所支持的语言。",
+  "fontExclamation": "本程序默认将 MiSans 作为显示字体。",
   "@@locale": "zh"
 }

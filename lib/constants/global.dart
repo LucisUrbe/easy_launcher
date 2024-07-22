@@ -87,4 +87,6 @@ const double dDialogSpaceV = 150.0;
 
 const double dDialogChildPadding = 20.0;
 
+const double dDialogDivH = 20.0;
+
 final dio = Dio();

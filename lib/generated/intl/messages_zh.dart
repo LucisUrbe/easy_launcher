@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "activity": MessageLookupByLibrary.simpleMessage("活动"),
         "announce": MessageLookupByLibrary.simpleMessage("公告"),
         "close": MessageLookupByLibrary.simpleMessage("关闭"),
+        "fontExclamation":
+            MessageLookupByLibrary.simpleMessage("本程序默认将 MiSans 作为显示字体。"),
         "info": MessageLookupByLibrary.simpleMessage("资讯"),
         "languageCodeSubtitle":
             MessageLookupByLibrary.simpleMessage("选项来源于官方所支持的语言。"),

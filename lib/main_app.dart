@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,7 +65,7 @@ class MainApp extends StatelessWidget {
                 indicatorShape: const RoundedRectangleBorder(
                   side: BorderSide(),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
+                    Radius.circular(global.dPostRadius),
                   ),
                 ),
               ),
