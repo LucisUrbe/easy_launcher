@@ -69,7 +69,7 @@ class MainApp extends StatelessWidget {
                   ),
                 ),
               ),
-              fontFamily: 'MiSans', // TODO: add an exclamation about this font
+              fontFamily: 'MiSans',
             ),
             home: const MainPage(),
             locale: locale,
